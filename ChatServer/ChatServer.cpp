@@ -11,6 +11,7 @@
 
 #include "ChatServer.h"
 #include "NetworkUtill.h"
+#include "Session.h"
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include <iostream>
@@ -99,8 +100,8 @@ void OJT::ChatServer::Select()
 	FD_SET(ListenSocket, &read);
 	for (Session& session : Sessions)
 	{
-		if (session.recvBytes > 0) FD_SET(session.socket, &read);
-		if (session.sendBytes > 0) FD_SET(session.socket, &write);
+		if (session.RecvBytes > 0 || true) FD_SET(session.Socket, &read);
+		if (session.SendBytes > 0) FD_SET(session.Socket, &write);
 	}
 
 	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
@@ -121,8 +122,28 @@ void OJT::ChatServer::Select()
 			const char* addrString = inet_ntop(AF_INET, (SOCKADDR*)&clientAddr.sin_addr, buffer, sizeof(buffer));
 			std::wcout << L"Connection : IP Address = " << addrString << "\n";
 			std::cout << addrString << "\n";
-			AddClientSocket(clientSocket);
+			Session& clientSession = AddClientSocket(clientSocket);
+			SendText(clientSession, L"welcome_chat.\n");
 		}
+	}
+	//Recv
+	for (Session& session : Sessions)
+	{
+		if (!FD_ISSET(session.Socket, &read)) continue;
+		ZeroMemory(session.ReadBuffer.data(), session.ReadBuffer.size() * sizeof(Byte));
+		ret = recv(session.Socket, (char*)session.ReadBuffer.data(), sizeof(Char), 0);
+		//ret = recv(session.Socket, (char*)session.ReadBuffer.data(), session.RecvBytes, 0);
+		std::wcout << L"echo : " << (const Char*)session.ReadBuffer.data() << L"\n";
+	}
+	//Send
+	for (Session& session : Sessions)
+	{
+		if (!FD_ISSET(session.Socket, &write)) continue;
+
+		Int64 currentSize = session.SendStartCsr + session.SendBytes > session.SendBuffer.size() ? session.SendBuffer.size() - session.SendStartCsr : session.SendBytes;
+		ret = send(session.Socket, (const char*)session.SendBuffer.data() + session.SendStartCsr, currentSize, 0);
+		session.SendStartCsr = (session.SendStartCsr + currentSize) % session.SendBuffer.size();
+		session.SendBytes -= currentSize;
 	}
 }
 
@@ -130,6 +151,35 @@ OJT::Session& OJT::ChatServer::AddClientSocket(SocketHandle socket)
 {
 	Sessions.emplace_back(socket);
 	return Sessions.back();
+}
+
+void OJT::ChatServer::SendText(Session& session, const Char* message)
+{
+	if (session.SendBytes == 0)
+	{
+		session.SendStartCsr = 0;
+		session.SendBufferCsr = 0;
+	}
+	Int64 csrMessage = 0;
+	Int64 remainSize = lstrlenW(message) * sizeof(Char);
+	session.SendBytes += remainSize;
+	while (remainSize != 0)
+	{
+		Int64 currentSendSize = 0;
+		if (session.SendBufferCsr + session.SendBytes > session.SendBuffer.size()) // 버퍼 넘치면
+		{
+			currentSendSize = session.SendBufferCsr + session.SendBytes - session.SendBuffer.size();
+		}
+		else 
+		{
+			currentSendSize = remainSize;
+		}
+
+		memcpy_s(session.SendBuffer.data() + session.SendBufferCsr, currentSendSize, message + csrMessage, currentSendSize);
+		session.SendBufferCsr = (session.SendBufferCsr + currentSendSize) % session.SendBuffer.size();
+		csrMessage += currentSendSize;
+		remainSize -= currentSendSize;
+	}
 }
 
 void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking)

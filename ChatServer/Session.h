@@ -17,12 +17,16 @@ namespace OJT
 	struct Session
 	{
 		Session(SocketHandle socket)
-			: Socket(socket), ReadBuffer{0,}
+			: Socket(socket), ReadBuffer{ 0, }
 		{
-		}
+		};
 		SocketHandle Socket;
 		UInt64 RecvBytes = 0;
-		UInt64 SendBytes = 0;
 		std::array<Byte, 512> ReadBuffer;
+
+		UInt64 SendBufferCsr = 0;
+		UInt64 SendStartCsr = 0;
+		UInt64 SendBytes = 0;
+		std::array<Byte, 1024> SendBuffer;
 	};
 };
