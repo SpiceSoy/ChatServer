@@ -36,7 +36,7 @@ void OJT::ChatServer::Initialize(UInt16 port)
 
 void OJT::ChatServer::InitializeSocket()
 {
-	std::wcout << L"Initialize Socket\n";
+	std::cout << "Initialize Socket\n";
 	int ret = 0;
 	WORD version = MAKEWORD(2, 2);
 	WSADATA wsaData;
@@ -44,25 +44,25 @@ void OJT::ChatServer::InitializeSocket()
 	ret = WSAStartup(version, &wsaData);
 	if (ret != 0)
 	{
-		NetworkUtill::PrintLastErrorMessage(L"Init");
+		NetworkUtill::PrintLastErrorMessage("Init");
 		exit(0);
 	}
 }
 
 void OJT::ChatServer::CreateListenSocket()
 {
-	std::wcout << L"Create Listen Socket\n";
+	std::cout << "Create Listen Socket\n";
 	ListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ListenSocket == INVALID_SOCKET)
 	{
-		NetworkUtill::PrintLastErrorMessage(L"CreateListen");
+		NetworkUtill::PrintLastErrorMessage("CreateListen");
 		exit(0);
 	}
 }
 
 void OJT::ChatServer::BindListenSocket()
 {
-	std::wcout << L"Bind Listen Socket\n";
+	std::cout << "Bind Listen Socket\n";
 	SOCKADDR_IN serverAddress;
 	ZeroMemory(&serverAddress, sizeof(SOCKADDR_IN));
 	serverAddress.sin_family = AF_INET;
@@ -71,18 +71,18 @@ void OJT::ChatServer::BindListenSocket()
 	int ret = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
 	if (ret == SOCKET_ERROR)
 	{
-		NetworkUtill::PrintLastErrorMessage(L"Bind");
+		NetworkUtill::PrintLastErrorMessage("Bind");
 		exit(0);
 	}
 }
 
 void OJT::ChatServer::StartListen()
 {
-	std::wcout << L"Start Listen\n";
+	std::cout << "Start Listen\n";
 	int ret = listen(ListenSocket, SOMAXCONN);
 	if (ret == SOCKET_ERROR)
 	{
-		NetworkUtill::PrintLastErrorMessage(L"StartListen");
+		NetworkUtill::PrintLastErrorMessage("StartListen");
 		exit(0);
 	}
 	ChangeNoneBlockingOption(ListenSocket, true);
@@ -105,7 +105,7 @@ void OJT::ChatServer::Select()
 	}
 
 	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
-	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage(L"Select");
+	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage("Select");
 
 	//Accept
 	if (FD_ISSET(ListenSocket, &read))
@@ -114,26 +114,36 @@ void OJT::ChatServer::Select()
 		SOCKADDR_IN clientAddr;
 		INT32 addrLength = sizeof(clientAddr);
 		clientSocket = accept(ListenSocket, (SOCKADDR*)&clientAddr, &addrLength);
-		if(clientSocket == INVALID_SOCKET) NetworkUtill::PrintLastErrorMessage(L"Accept");
+		if(clientSocket == INVALID_SOCKET) NetworkUtill::PrintLastErrorMessage("Accept");
 		else 
 		{
 			char buffer[512];
 			ZeroMemory(buffer, sizeof(buffer));
 			const char* addrString = inet_ntop(AF_INET, (SOCKADDR*)&clientAddr.sin_addr, buffer, sizeof(buffer));
-			std::wcout << L"Connection : IP Address = " << addrString << "\n";
+			std::cout << "Connection : IP Address = " << addrString << "\n";
 			std::cout << addrString << "\n";
 			Session& clientSession = AddClientSocket(clientSocket);
-			SendText(clientSession, L"welcome_chat.\n");
+			//SendOption(clientSession);
+			SendText(clientSession, "** 안녕하세요. 텍스트 채팅서버 ver 0.1 입니다. \r\n");
+			SendText(clientSession, "** 로그인 명령어(LOGIN)를 사용해주세요.\r\n");
 		}
 	}
 	//Recv
 	for (Session& session : Sessions)
 	{
 		if (!FD_ISSET(session.Socket, &read)) continue;
-		ZeroMemory(session.ReadBuffer.data(), session.ReadBuffer.size() * sizeof(Byte));
-		ret = recv(session.Socket, (char*)session.ReadBuffer.data(), sizeof(Char), 0);
-		//ret = recv(session.Socket, (char*)session.ReadBuffer.data(), session.RecvBytes, 0);
-		std::wcout << L"echo : " << (const Char*)session.ReadBuffer.data() << L"\n";
+		ret = recv(session.Socket, ((char*)session.ReadBuffer.data()) + session.RecvBytes, sizeof(Char), 0);
+		Char* expectEnd = reinterpret_cast<Char*>(session.ReadBuffer.data() + session.RecvBytes);
+		if (expectEnd[0] == '\n')
+		{
+			expectEnd[1] = 0;
+			std::cout << "echo : " << (const Char*)session.ReadBuffer.data();
+			session.RecvBytes = 0;
+		}
+		else 
+		{
+			session.RecvBytes += ret;
+		}
 	}
 	//Send
 	for (Session& session : Sessions)
@@ -153,7 +163,18 @@ OJT::Session& OJT::ChatServer::AddClientSocket(SocketHandle socket)
 	return Sessions.back();
 }
 
+void OJT::ChatServer::SendOption(Session& session)
+{
+	Byte options[3] = { 255, 252, 34 };
+	SendByte(session, options, 3);
+}
+
 void OJT::ChatServer::SendText(Session& session, const Char* message)
+{
+	SendByte(session, (Byte*)message, strlen(message) * sizeof(Char));
+}
+
+void OJT::ChatServer::SendByte(Session& session, Byte* data, UInt64 size)
 {
 	if (session.SendBytes == 0)
 	{
@@ -161,7 +182,7 @@ void OJT::ChatServer::SendText(Session& session, const Char* message)
 		session.SendBufferCsr = 0;
 	}
 	Int64 csrMessage = 0;
-	Int64 remainSize = lstrlenW(message) * sizeof(Char);
+	Int64 remainSize = size;
 	session.SendBytes += remainSize;
 	while (remainSize != 0)
 	{
@@ -170,12 +191,12 @@ void OJT::ChatServer::SendText(Session& session, const Char* message)
 		{
 			currentSendSize = session.SendBufferCsr + session.SendBytes - session.SendBuffer.size();
 		}
-		else 
+		else
 		{
 			currentSendSize = remainSize;
 		}
 
-		memcpy_s(session.SendBuffer.data() + session.SendBufferCsr, currentSendSize, message + csrMessage, currentSendSize);
+		memcpy_s(session.SendBuffer.data() + session.SendBufferCsr, currentSendSize, data + csrMessage, currentSendSize);
 		session.SendBufferCsr = (session.SendBufferCsr + currentSendSize) % session.SendBuffer.size();
 		csrMessage += currentSendSize;
 		remainSize -= currentSendSize;
@@ -186,12 +207,12 @@ void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneB
 {
 	u_long on = isNoneBlocking;
 	int ret = ioctlsocket(socket, FIONBIO, &on);
-	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage(L"ioctlsocket");
+	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage("ioctlsocket");
 }
 
 Int32 OJT::ChatServer::Process()
 {
-	std::wcout << L"Start Server Process\n";
+	std::cout << "Start Server Process\n";
 	StartListen();
 	while (true)
 	{
