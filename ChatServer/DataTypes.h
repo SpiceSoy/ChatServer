@@ -26,7 +26,7 @@ using Void = void;
 using Single = float;
 using Double = float;
 using Bool = bool;
-using Char = wchar_t;
+using Char = char;
 using Byte = unsigned char;
 
 using SocketHandle = UInt32;
