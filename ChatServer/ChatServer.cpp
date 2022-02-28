@@ -44,7 +44,7 @@ void OJT::ChatServer::InitializeSocket()
 	ret = WSAStartup(version, &wsaData);
 	if (ret != 0)
 	{
-		NetworkUtill::PrintLastErrorMessage("Init");
+		PrintLastErrorMessageInFile("Init");
 		exit(0);
 	}
 }
@@ -55,7 +55,7 @@ void OJT::ChatServer::CreateListenSocket()
 	ListenSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (ListenSocket == INVALID_SOCKET)
 	{
-		NetworkUtill::PrintLastErrorMessage("CreateListen");
+		PrintLastErrorMessageInFile("CreateListen");
 		exit(0);
 	}
 }
@@ -71,7 +71,7 @@ void OJT::ChatServer::BindListenSocket()
 	int ret = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
 	if (ret == SOCKET_ERROR)
 	{
-		NetworkUtill::PrintLastErrorMessage("Bind");
+		PrintLastErrorMessageInFile("Bind");
 		exit(0);
 	}
 }
@@ -82,7 +82,7 @@ void OJT::ChatServer::StartListen()
 	int ret = listen(ListenSocket, SOMAXCONN);
 	if (ret == SOCKET_ERROR)
 	{
-		NetworkUtill::PrintLastErrorMessage("StartListen");
+		PrintLastErrorMessageInFile("StartListen");
 		exit(0);
 	}
 	ChangeNoneBlockingOption(ListenSocket, true);
@@ -96,7 +96,7 @@ void OJT::ChatServer::Select()
 	FD_ZERO(&read);
 	FD_ZERO(&write);
 	FD_ZERO(&except);
-	
+
 	FD_SET(ListenSocket, &read);
 	for (Session& session : Sessions)
 	{
@@ -105,7 +105,7 @@ void OJT::ChatServer::Select()
 	}
 
 	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
-	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage("Select");
+	if (ret == SOCKET_ERROR) PrintLastErrorMessageInFile("Select");
 
 	//Accept
 	if (FD_ISSET(ListenSocket, &read))
@@ -114,8 +114,8 @@ void OJT::ChatServer::Select()
 		SOCKADDR_IN clientAddr;
 		INT32 addrLength = sizeof(clientAddr);
 		clientSocket = accept(ListenSocket, (SOCKADDR*)&clientAddr, &addrLength);
-		if(clientSocket == INVALID_SOCKET) NetworkUtill::PrintLastErrorMessage("Accept");
-		else 
+		if (clientSocket == INVALID_SOCKET) PrintLastErrorMessageInFile("Accept");
+		else
 		{
 			char buffer[512];
 			ZeroMemory(buffer, sizeof(buffer));
@@ -140,7 +140,7 @@ void OJT::ChatServer::Select()
 			std::cout << "echo : " << (const Char*)session.ReadBuffer.data();
 			session.RecvBytes = 0;
 		}
-		else 
+		else
 		{
 			session.RecvBytes += ret;
 		}
@@ -207,7 +207,7 @@ void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneB
 {
 	u_long on = isNoneBlocking;
 	int ret = ioctlsocket(socket, FIONBIO, &on);
-	if (ret == SOCKET_ERROR) NetworkUtill::PrintLastErrorMessage("ioctlsocket");
+	if (ret == SOCKET_ERROR) PrintLastErrorMessageInFile("ioctlsocket");
 }
 
 Int32 OJT::ChatServer::Process()
