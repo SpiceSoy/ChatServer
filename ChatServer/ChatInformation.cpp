@@ -73,27 +73,15 @@ const std::map<std::string, OJT::Session*>& OJT::ChatInformation::GetIdMap() con
 void OJT::ChatInformation::EraseClosedSessions()
 {
 	auto it = Sessions.begin();
-	while (true)
-	{
-		it = std::find_if(Sessions.begin(), Sessions.end(), [](const std::unique_ptr<Session>& a) {return a.get()->IsClosed(); });
-		if (it == Sessions.end()) break;
-		else
-		{
-			IdMap.erase((*it)->GetId());
-			it = Sessions.erase(it);
-		}
-	}
+	auto newEnd = std::remove_if(Sessions.begin(), Sessions.end(), [](const std::unique_ptr<Session>& a) {return a.get()->IsClosed(); });
+	Sessions.erase(newEnd, Sessions.end());
 }
 
 void OJT::ChatInformation::EraseEmptyChatRooms()
 {
 	auto it = ChatRooms.begin();
-	while (true)
-	{
-		it = std::find_if(ChatRooms.begin(), ChatRooms.end(), [](const std::unique_ptr<ChatRoom>& a) {return a.get()->GetCurrentUserCount() == 0; });
-		if (it == ChatRooms.end()) break;
-		else it = ChatRooms.erase(it);
-	}
+	auto newEnd = std::remove_if(ChatRooms.begin(), ChatRooms.end(), [](const std::unique_ptr<ChatRoom>& a) {return a.get()->GetCurrentUserCount() == 0; });
+	ChatRooms.erase(newEnd, ChatRooms.end());
 }
 
 OJT::ChatRoom& OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)
