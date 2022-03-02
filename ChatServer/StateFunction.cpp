@@ -57,6 +57,7 @@ void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, const Char
 	{
 		std::cout << "Login : " << argument;
 		session.SetState(SessionState::MAIN_MENU);
+		session.SetId(argument);
 	}
 	else 
 	{

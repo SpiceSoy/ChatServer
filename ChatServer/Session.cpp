@@ -65,6 +65,16 @@ void OJT::Session::Close()
 	State = SessionState::CLOSE;
 }
 
+const std::string& OJT::Session::GetId() const
+{
+	return this->Id;
+}
+
+void OJT::Session::SetId(const Char* name)
+{
+	this->Id = name;
+}
+
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
 	if (SendBytes == 0)

@@ -47,6 +47,8 @@ namespace OJT
 		void ProcessRecive();
 		void SendText(const Char* message);
 		void Close();
+		void SetId(const Char* name);
+		const std::string& GetId() const;
 	private:
 		void SendByte(const Byte* data, UInt64 size);
 	protected:
