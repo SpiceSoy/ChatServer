@@ -67,7 +67,8 @@ void OJT::Session::ProcessRecive()
 		else
 		{
 			RecvBytes += recivedBytes;
-			if (ReadBuffer.size() < RecvBytes * 1.5) ReadBuffer.resize(ReadBuffer.size() * 2);
+			bool expectedOver = ReadBuffer.size() < RecvBytes * 1.5;
+			if (expectedOver) ReadBuffer.resize(ReadBuffer.size() * 2);
 		}
 	}
 }
@@ -129,7 +130,8 @@ void OJT::Session::SetAddress(const Char* address, UInt16 port)
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
 	if (IsClosed()) return;
-	if (SendBytes + size > SendBuffer.size()) SendBuffer.resize(SendBuffer.size() * 2);
+	bool willOver = SendBytes + size > SendBuffer.size();
+	if (willOver) SendBuffer.resize(SendBuffer.size() * 2);
 	memcpy_s(SendBuffer.data() + SendBytes, size, data, size);
 	SendBytes += size;
 }
