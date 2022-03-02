@@ -26,7 +26,7 @@ namespace OJT
 		UInt64 SendBufferCsr = 0;
 		UInt64 SendStartCsr = 0;
 		UInt64 SendBytes = 0;
-		std::array<Byte, 1024> SendBuffer;
+		std::array<Byte, 2048> SendBuffer;
 
 		SessionState State = SessionState::EMPTY;
 		int RoomNumber = 0;
