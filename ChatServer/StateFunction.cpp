@@ -70,6 +70,12 @@ void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, ChatInform
 			session.SetState(SessionState::MAIN_MENU);
 			session.SetId(argument);
 			information.SetId(session, argument);
+			session.SendText("---------------------------------------------------------------\r\n");
+			session.SendText("반갑습니다. 텍스트 채팅 서버 ver 0.1 입니다.\r\n\r\n");
+			session.SendText("이용 중 불편하신 점이 있으면 아래 이메일로 문의 바랍니다.\r\n");
+			session.SendText("감사합니다.\r\n\n");
+			session.SendText("넷마블 네오 클라이언트 직무 김태형 (taehyeong.k@nm-neo.com)\r\n");
+			session.SendText("---------------------------------------------------------------\r\n");
 		} 
 		else 
 		{
@@ -85,12 +91,6 @@ void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, ChatInform
 
 void OJT::StateFunction::OnMainMenuStateEnter(Session& session, ChatInformation& information)
 {
-	session.SendText("---------------------------------------------------------------\r\n");
-	session.SendText("반갑습니다. 텍스트 채팅 서버 ver 0.1 입니다.\r\n\r\n");
-	session.SendText("이용 중 불편하신 점이 있으면 아래 이메일로 문의 바랍니다.\r\n");
-	session.SendText("감사합니다.\r\n\n");
-	session.SendText("넷마블 네오 클라이언트 직무 김태형 (taehyeong.k@nm-neo.com)\r\n");
-	session.SendText("---------------------------------------------------------------\r\n");
 	session.SendText("명령어 안내(H) 종료(X)\r\n");
 }
 
@@ -99,7 +99,7 @@ void OJT::StateFunction::OnMainMenuStateEnter(Session& session, ChatInformation&
 // second : argument Ptr
 static constexpr Int32 COMMAND_SWITCH_UNCOMMAND = -1;
 static constexpr Int32 COMMAND_SWITCH_NO_ARGUMENT = -2;
-static std::pair<Int32, const Char*> CommandSwitch(const Char* input, const Char* commands[], bool shouldArgument[], int commandCount)
+static std::pair<Int32, const Char*> CommandSwitch(const Char* input, const Char* const commands[], const bool shouldArgument[], int commandCount)
 {
 	for (Int32 i = 0; i < commandCount; i++)
 	{
@@ -135,39 +135,44 @@ static constexpr Int32 COMMAND_SWITCH_ST = 3;
 static constexpr Int32 COMMAND_SWITCH_PF = 4;
 static constexpr Int32 COMMAND_SWITCH_TO = 5;
 static constexpr Int32 COMMAND_SWITCH_O = 6;
-static constexpr Int32 COMMAND_SWITCH_J = 7;
+static constexpr Int32 COMMAND_SWITCH_J_Q = 7;
 static constexpr Int32 COMMAND_SWITCH_X = 8;
-static Void SendCommandHelp(OJT::Session& session)
+static Void SendCommandHelp(OJT::Session& session , bool inRoom)
 {
 	session.SendText("---------------------------------------------------------------\r\n");
-	session.SendText("H                           명령어 안내\r\n");
-	session.SendText("US                          이용자 목록 보기\r\n");
-	session.SendText("LT                          대화방 목록 보기\r\n");
-	session.SendText("ST [방번호]                 대화방 정보 보기\r\n");
-	session.SendText("PF [상대방ID]               이용자 정보 보기\r\n");
-	session.SendText("TO [상대방ID] [메시지]      쪽지 보내기\r\n");
-	session.SendText("O  [최대인원] [방제목]      대화방 만들기\r\n");
-	session.SendText("J  [방번호]                 대화방 참여하기\r\n");
-	session.SendText("X                           끝내기 \r\n");
+	if (inRoom)
+	{
+		session.SendText("/H                           명령어 안내\r\n");
+		session.SendText("/US                          이용자 목록 보기\r\n");
+		session.SendText("/LT                          대화방 목록 보기\r\n");
+		session.SendText("/ST [방번호]                 대화방 정보 보기\r\n");
+		session.SendText("/PF [상대방ID]               이용자 정보 보기\r\n");
+		session.SendText("/TO [상대방ID] [메시지]      쪽지 보내기\r\n");
+		session.SendText("/O  [최대인원] [방제목]      대화방 만들기\r\n");
+		session.SendText("/Q                           대화방 나가기\r\n");
+		session.SendText("/X                           끝내기 \r\n");
+	}
+	else 
+	{
+		session.SendText("H                           명령어 안내\r\n");
+		session.SendText("US                          이용자 목록 보기\r\n");
+		session.SendText("LT                          대화방 목록 보기\r\n");
+		session.SendText("ST [방번호]                 대화방 정보 보기\r\n");
+		session.SendText("PF [상대방ID]               이용자 정보 보기\r\n");
+		session.SendText("TO [상대방ID] [메시지]      쪽지 보내기\r\n");
+		session.SendText("O  [최대인원] [방제목]      대화방 만들기\r\n");
+		session.SendText("J  [방번호]                 대화방 참여하기\r\n");
+		session.SendText("X                           끝내기 \r\n");
+	}
 	session.SendText("---------------------------------------------------------------\r\n");
 	session.SendText("명령어 안내(H) 종료(X)\r\n");
 }
 
-void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInformation& information, const Char* input)
+static Void CommandLogic(OJT::Session& session, OJT::ChatInformation& information, const Char* input, const Char* argument, Int32 commandIndex, bool inRoom) //TODO: 리팩토링 예정
 {
-	static const Char* commands[] = { "H", "US", "LT", "ST", "PF", "TO", "O", "J", "X" };
-	static bool shouldArgument[] = { 0,0,0,1,1,1,1,1,0 };
-	auto ret = CommandSwitch(input, commands, shouldArgument, ARRAYSIZE(commands));
-	Int32 commandIndex = ret.first;
-	const Char* argument = ret.second;
+	using namespace OJT;
 	switch (commandIndex)
 	{
-	case COMMAND_SWITCH_UNCOMMAND:
-	{
-		session.SendText("명령어를 입력해주십시오.\r\n");
-		session.SendText("명령어 안내(H) 종료(X)\r\n");
-	}
-	break;
 	case COMMAND_SWITCH_NO_ARGUMENT:
 	{
 		session.SendText("명령어 인자가 이상합니다.\r\n");
@@ -176,7 +181,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 	break;
 	case COMMAND_SWITCH_H:
 	{
-		SendCommandHelp(session);
+		SendCommandHelp(session, inRoom);
 	}
 	break;
 	case COMMAND_SWITCH_US:
@@ -187,7 +192,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		for (const auto& otherSession : information.GetSessions())
 		{
 			sstream << " 이용자: " << std::setw(userWidth) << std::left << otherSession->GetId()
-				<< "접속지: " << otherSession->GetAddress() << ":" << otherSession->GetPort() 
+				<< "접속지: " << otherSession->GetAddress() << ":" << otherSession->GetPort()
 				<< "\r\n";
 		}
 		session.SendText(sstream.str().c_str());
@@ -203,7 +208,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		Int32 roomIndex = 1;
 		for (const auto& room : information.GetChatRooms())
 		{
-			sstream << "[" << std::setw(3) << roomIndex << "] (" 
+			sstream << "[" << std::setw(3) << roomIndex << "] ("
 				<< std::setw(2) << room->GetCurrentUserCount() << "/" << std::setw(2) << room->GetMaxUser() << ") "
 				<< room->GetTitle()
 				<< "\r\n";
@@ -228,7 +233,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			targetRoom = session.GetChatRoom();
 			if (targetRoom != nullptr) roomIndex = information.GetChatRoomIndex(*targetRoom);
 		}
-		else 
+		else
 		{
 			targetRoom = &information.GetChatRoom(roomIndex);
 		}
@@ -242,7 +247,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 				<< "\r\n";
 			std::time_t createTime = std::chrono::system_clock::to_time_t(targetRoom->GetCreatedTime());
 			std::tm createTm;
-			localtime_s( &createTm, &createTime);
+			localtime_s(&createTm, &createTime);
 			sstream << "  개설시간:  " << std::put_time(&createTm, "%T") << "\r\n";
 			for (const auto& member : targetRoom->GetSessions())
 			{
@@ -255,7 +260,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			session.SendText("---------------------------------------------------------------\r\n");
 			session.SendText("명령어 안내(H) 종료(X)\r\n");
 		}
-		else 
+		else
 		{
 			session.SendText("해당 번호의 방이 존재하지 않습니다.\r\n");
 			session.SendText("명령어 안내(H) 종료(X)\r\n");
@@ -275,14 +280,14 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			{
 				sstream << targetSession.GetId() << "님은 현재 " << information.GetChatRoomIndex(*room) + 1 << "번 방에 참여중입니다.\r\n";
 			}
-			else 
+			else
 			{
 				sstream << targetSession.GetId() << "님은 현재 메인 메뉴에서 대기중입니다.\r\n";
 			}
 			session.SendText(sstream.str().c_str());
 			session.SendText("명령어 안내(H) 종료(X)\r\n");
 		}
-		else 
+		else
 		{
 			session.SendText("해당 ID를 가진 유저가 존재하지 않습니다.\r\n");
 			session.SendText("명령어 안내(H) 종료(X)\r\n");
@@ -328,13 +333,13 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			session.SendText("명령어 인자가 이상합니다.\r\n");
 			session.SendText("명령어 안내(H) 종료(X)\r\n");
 		}
-		else 
+		else
 		{
 			if (maxUser < 2 || maxUser > 20)
 			{
 				session.SendText("대화방 인원을 2-20명 사이로 입력해주세요.\r\n");
 			}
-			else 
+			else
 			{
 				ChatRoom& room = information.CreateChatRoom(maxUser, title);
 				session.SendText("대화방이 개설되었습니다.\r\n");
@@ -345,31 +350,40 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		}
 	}
 	break;
-	case COMMAND_SWITCH_J:
+	case COMMAND_SWITCH_J_Q:
 	{
-		std::stringstream sstream; // 커맨드 읽기 임시로 설정 , 이후 하나로 통일
-		sstream.str(argument);
-		Int32 index = 0;
-		std::string title;
-		sstream >> index;
-		index -= 1; // 1번부터 시작 보정
-		if (sstream.bad())
+		if (inRoom) // /Q
 		{
-			session.SendText("명령어 인자가 이상합니다.\r\n");
-			session.SendText("명령어 안내(H) 종료(X)\r\n");
+			session.GetChatRoom()->ExitUser(session);
+			session.SetChatRoom(nullptr);
+			session.SetState(SessionState::MAIN_MENU);
 		}
-		else
+		else // J
 		{
-			if (information.HasChatRoom(index))
+			std::stringstream sstream; // 커맨드 읽기 임시로 설정 , 이후 하나로 통일
+			sstream.str(argument);
+			Int32 index = 0;
+			std::string title;
+			sstream >> index;
+			index -= 1; // 1번부터 시작 보정
+			if (sstream.bad())
 			{
-				ChatRoom& room = information.GetChatRoom(index);
-				session.SetChatRoom(&room);
-				room.EnterUser(session);
-				session.SetState(SessionState::CHAT_ROOM);
+				session.SendText("명령어 인자가 이상합니다.\r\n");
+				session.SendText("명령어 안내(H) 종료(X)\r\n");
 			}
 			else
 			{
-				session.SendText("해당하는 대화방이 없습니다.\r\n");
+				if (information.HasChatRoom(index))
+				{
+					ChatRoom& room = information.GetChatRoom(index);
+					session.SetChatRoom(&room);
+					room.EnterUser(session);
+					session.SetState(SessionState::CHAT_ROOM);
+				}
+				else
+				{
+					session.SendText("해당하는 대화방이 없습니다.\r\n");
+				}
 			}
 		}
 	}
@@ -380,9 +394,26 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		session.Close();
 	}
 	break;
-
 	default:
 		break;
+	}
+}
+
+void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInformation& information, const Char* input)
+{
+	static constexpr const Char* commands[] = { "H", "US", "LT", "ST", "PF", "TO", "O", "J", "X" };
+	static constexpr bool shouldArgument[] = { 0,0,0,1,1,1,1,1,0 };
+	auto ret = CommandSwitch(input, commands, shouldArgument, ARRAYSIZE(commands));
+	Int32 commandIndex = ret.first;
+	const Char* argument = ret.second;
+	if (commandIndex != COMMAND_SWITCH_UNCOMMAND)
+	{
+		CommandLogic(session, information, input, argument, commandIndex, false);
+	}
+	else 
+	{
+		session.SendText("명령어를 입력해주세요.\r\n");
+		session.SendText("명령어 안내(H) 종료(X)\r\n");
 	}
 }
 
@@ -408,8 +439,20 @@ void OJT::StateFunction::OnChatRoomStateReciveLine(Session& session, ChatInforma
 		return;
 	}
 
-	std::stringstream sstream;
-	sstream << session.GetId() << "> " << input  << "\r\n";
-	room->BroadCastText(sstream.str().c_str());
+	static constexpr const Char* commands[] = { "/H", "/US", "/LT", "/ST", "/PF", "/TO", "/O", "/Q", "/X" };
+	static constexpr bool shouldArgument[] = { 0,0,0,1,1,1,1,0,0 };
+	auto ret = CommandSwitch(input, commands, shouldArgument, ARRAYSIZE(commands));
+	Int32 commandIndex = ret.first;
+	const Char* argument = ret.second;
+	if (commandIndex != COMMAND_SWITCH_UNCOMMAND)
+	{
+		CommandLogic(session, information, input, argument, commandIndex, true);
+	}
+	else
+	{
+		std::stringstream sstream;
+		sstream << session.GetId() << "> " << input << "\r\n";
+		room->BroadCastText(sstream.str().c_str());
+	}
 }
 
