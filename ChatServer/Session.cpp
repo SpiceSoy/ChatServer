@@ -12,6 +12,7 @@
 #include "Session.h"
 #include "StateFunction.h"
 #include "ChatInformation.h"
+#include "NetworkUtill.h"
 #include <WinSock2.h>
 #include <iostream>
 
@@ -34,25 +35,37 @@ void OJT::Session::SetState(SessionState state)
 void OJT::Session::ProcessSend()
 {
 	Int64 currentSize = SendStartCsr + SendBytes > SendBuffer.size() ? SendBuffer.size() - SendStartCsr : SendBytes;
-	Int32 ret = send(Socket, (const char*)SendBuffer.data() + SendStartCsr, currentSize, 0);
+	Int32 sentBytes = send(Socket, (const char*)SendBuffer.data() + SendStartCsr, currentSize, 0);
+	if (sentBytes == SOCKET_ERROR)
+	{
+		NetworkUtill::PrintLastErrorMessage("send", __FILE__, __LINE__);
+		Close();
+	}
 	SendStartCsr = (SendStartCsr + currentSize) % SendBuffer.size();
 	SendBytes -= currentSize;
 }
 
 void OJT::Session::ProcessRecive()
 {
-	Int32 ret = recv(Socket, ((char*)ReadBuffer.data()) + RecvBytes, sizeof(Char), 0);
+	Int32 recivedBytes = recv(Socket, ((char*)ReadBuffer.data()) + RecvBytes, sizeof(Char), 0); // 이름 겹쳐서 로컬변수 전문 작성
 	Char* expectEnd = reinterpret_cast<Char*>(ReadBuffer.data() + RecvBytes);
-	if (expectEnd[0] == '\n')
+	if (recivedBytes == 0 || recivedBytes == SOCKET_ERROR)
 	{
-		expectEnd[0] = '\0';
-		if (expectEnd != reinterpret_cast<Char*>(ReadBuffer.data())) *(expectEnd - 1) = '\0';
-		OnReciveLine(reinterpret_cast<const Char*>(ReadBuffer.data()));
-		RecvBytes = 0;
+		Close();
 	}
-	else
+	else 
 	{
-		RecvBytes += ret;
+		if (expectEnd[0] == '\n')
+		{
+			expectEnd[0] = '\0';
+			if (expectEnd != reinterpret_cast<Char*>(ReadBuffer.data())) *(expectEnd - 1) = '\0';
+			OnReciveLine(reinterpret_cast<const Char*>(ReadBuffer.data()));
+			RecvBytes = 0;
+		}
+		else
+		{
+			RecvBytes += recivedBytes;
+		}
 	}
 }
 
@@ -113,6 +126,7 @@ void OJT::Session::SetAddress(const Char* address, UInt16 port)
 // TODO: 심각한 버그 있음 : 피드백 시트 참고하여 수정!
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
+	if (IsClosed()) return;
 	if (SendBytes == 0)
 	{
 		SendStartCsr = 0;
