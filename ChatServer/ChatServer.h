@@ -12,7 +12,9 @@
 #pragma once
 #include "DataTypes.h"
 #include "Session.h"
+#include "ChatRoom.h"
 #include <vector>
+#include <map>
 namespace OJT
 {
 	class ChatServer
@@ -27,14 +29,15 @@ namespace OJT
 		UInt16 ListenPort = 0;
 		SocketHandle ListenSocket = 0;
 		static constexpr UInt32 MAX_SESSION_SIZE = 64;
-		std::vector<Session> Sessions;
 		void InitializeSocket();
 		void CreateListenSocket();
 		void BindListenSocket();
 		void StartListen();
 		void Select();
-		Session& AddClientSocket(SocketHandle socket);
 
 		static void ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking);
+
+	public:
+		Session& FindID();
 	};
 }
