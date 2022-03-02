@@ -126,7 +126,6 @@ void OJT::Session::SetAddress(const Char* address, UInt16 port)
 	Port = port;
 } 
 
-// TODO: 심각한 버그 있음 : 피드백 시트 참고하여 수정!
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
 	if (IsClosed()) return;
