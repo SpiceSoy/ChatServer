@@ -13,6 +13,7 @@
 #include "ChatInformation.h"
 #include <string>
 #include <vector>
+#include <array>
 
 
 OJT::ChatRoom::ChatRoom(ChatInformation* information)
@@ -80,5 +81,15 @@ void OJT::ChatRoom::BroadCastText(const Char* text)
 	{
 		session->SendText(text);
 	}
+}
+
+void OJT::ChatRoom::BroadCastFormattedText(const Char* fmt, ...)
+{
+	std::array<Char, 2048> buffer;
+	va_list va;
+	va_start(va, fmt);
+	vsprintf_s(buffer.data(), 2048, fmt, va);
+	BroadCastText(buffer.data());
+	va_end(va);
 }
 

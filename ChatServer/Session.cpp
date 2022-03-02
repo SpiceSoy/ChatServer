@@ -13,8 +13,10 @@
 #include "StateFunction.h"
 #include "ChatInformation.h"
 #include "NetworkUtill.h"
+#include "Constant.h"
 #include <WinSock2.h>
 #include <iostream>
+#include <array>
 
 SocketHandle OJT::Session::GetSocket() const
 {
@@ -78,6 +80,16 @@ void OJT::Session::SendText(const Char* message)
 	SendByte(reinterpret_cast<const Byte*>(message), strlen(message) * sizeof(Char));
 }
 
+void OJT::Session::SendFormattedText(const Char* fmt, ...)
+{
+	std::array<Char, 2048> buffer;
+	va_list va;
+	va_start(va, fmt);
+	vsprintf_s(buffer.data(), 2048, fmt, va);
+	SendText(buffer.data());
+	va_end(va);
+}
+
 void OJT::Session::Close()
 {
 	if (Socket == 0) return;
@@ -138,7 +150,7 @@ void OJT::Session::SendByte(const Byte* data, UInt64 size)
 
 void OJT::Session::LogInput(const Char* input) const
 {
-	std::cout << AddressText << ":" << Port << "[" << Id << "] " << input << "\r\n";
+	printf_s(OJT::CONSTANT::FORMAT::SERVER_SIDE_USER_LOG, AddressText.c_str(), Port, Id.c_str(), input);
 }
 
 void OJT::Session::OnStateChenge(SessionState newState)

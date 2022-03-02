@@ -47,5 +47,6 @@ namespace OJT
 		void EnterUser(Session& session);
 		void ExitUser(Session& session);
 		void BroadCastText(const Char* text);
+		void BroadCastFormattedText(const Char* fmt, ...);
 	};
 }

@@ -14,6 +14,7 @@
 #include "DataTypes.h"
 #include <vector>
 #include <string>
+#include <stdarg.h>
 namespace OJT
 {
 	class ChatRoom;
@@ -54,7 +55,8 @@ namespace OJT
 		void SetState(SessionState state);
 		void ProcessSend();
 		void ProcessRecive();
-		void SendText(const Char* message); // 시간 여유로우면 가변인자 버전 추가 및 sstream 전부 변경 예정
+		void SendText(const Char* message);
+		void SendFormattedText(const Char* fmt, ...);
 		void Close();
 		void SetId(const Char* name);
 		void SetChatRoom(ChatRoom* room);

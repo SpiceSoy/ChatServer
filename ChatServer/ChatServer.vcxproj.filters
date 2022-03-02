@@ -39,6 +39,9 @@
     <ClInclude Include="ChatInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Constant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp">
