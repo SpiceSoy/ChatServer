@@ -160,6 +160,7 @@ Int32 OJT::ChatServer::Process()
 {
 	std::cout << "Start Server Process\n";
 	StartListen();
+	std::cout << "Start chat server / port : " << ListenPort <<"\n";
 	while (true)
 	{
 		Select();
