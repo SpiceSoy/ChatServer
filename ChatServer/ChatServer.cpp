@@ -12,7 +12,7 @@
 #include "ChatServer.h"
 #include "NetworkUtill.h"
 #include "Session.h"
-#include "InfoManager.h"
+#include "ChatInformation.h"
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include <iostream>
@@ -21,8 +21,7 @@
 
 OJT::ChatServer::ChatServer()
 {
-	InfoManager* inst = InfoManager::GetInstance();
-	inst->SetMaxSessions(MAX_SESSION_SIZE);
+	Information.SetMaxSessions(MAX_SESSION_SIZE);
 }
 
 OJT::ChatServer::~ChatServer()
@@ -102,9 +101,7 @@ void OJT::ChatServer::Select()
 
 	FD_SET(ListenSocket, &read);
 
-	InfoManager* info = InfoManager::GetInstance();
-
-	for (Session& session : info->GetSessions())
+	for (Session& session : Information.GetSessions())
 	{
 		FD_SET(session.GetSocket(), &read);
 		if (session.HasSendBytes()) FD_SET(session.GetSocket(), &write);
@@ -129,20 +126,20 @@ void OJT::ChatServer::Select()
 
 			UInt16 port = ntohs(clientAddr.sin_port);
 
-			Session& clientSession = info->AddClientSocket(clientSocket);
+			Session& clientSession = Information.AddClientSocket(clientSocket);
 			clientSession.SetAddress(addrString, port);
 			clientSession.SetState(SessionState::WAIT_LOGIN);
 			clientSession.LogInput("connected");
 		}
 	}
 	//Recv
-	for (Session& session : info->GetSessions())
+	for (Session& session : Information.GetSessions())
 	{
 		if (!FD_ISSET(session.GetSocket(), &read)) continue;
 		session.ProcessRecive();
 	}
 	//Send
-	for (Session& session : info->GetSessions())
+	for (Session& session : Information.GetSessions())
 	{
 		if (!FD_ISSET(session.GetSocket(), &write)) continue;
 		session.ProcessSend();

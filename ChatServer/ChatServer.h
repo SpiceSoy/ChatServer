@@ -13,6 +13,7 @@
 #include "DataTypes.h"
 #include "Session.h"
 #include "ChatRoom.h"
+#include "ChatInformation.h"
 #include <vector>
 #include <map>
 namespace OJT
@@ -29,6 +30,7 @@ namespace OJT
 		UInt16 ListenPort = 0;
 		SocketHandle ListenSocket = 0;
 		static constexpr UInt32 MAX_SESSION_SIZE = 64;
+		ChatInformation Information;
 		void InitializeSocket();
 		void CreateListenSocket();
 		void BindListenSocket();

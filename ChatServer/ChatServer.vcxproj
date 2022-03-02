@@ -145,7 +145,7 @@
     <ClInclude Include="ChatRoom.h" />
     <ClInclude Include="ChatServer.h" />
     <ClInclude Include="DataTypes.h" />
-    <ClInclude Include="InfoManager.h" />
+    <ClInclude Include="ChatInformation.h" />
     <ClInclude Include="NetworkUtill.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="SessionState.h" />
@@ -154,7 +154,7 @@
   <ItemGroup>
     <ClCompile Include="ChatRoom.cpp" />
     <ClCompile Include="ChatServer.cpp" />
-    <ClCompile Include="InfoManager.cpp" />
+    <ClCompile Include="ChatInformation.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkUtill.cpp" />
     <ClCompile Include="Session.cpp" />

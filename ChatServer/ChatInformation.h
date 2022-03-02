@@ -1,5 +1,5 @@
 //=================================================================================================
-// @file InfoManager.h
+// @file ChatInformation.h
 //
 // @brief Singletone Class of Chat Info(Chat room, user list)
 // 
@@ -17,20 +17,19 @@
 #include <vector>
 namespace OJT
 {
-	class InfoManager
+	class ChatInformation
 	{
 		std::vector<Session> Sessions;
 		std::vector<ChatRoom> ChatRooms;
 		std::map<std::string, Int32> IdMap;
-	private:
-		InfoManager() = default;
-		InfoManager(const InfoManager&) = delete;
-		InfoManager(InfoManager&&) = delete;
+	public:
+		ChatInformation() = default;
+		ChatInformation(const ChatInformation&) = delete;
+		ChatInformation(ChatInformation&&) = delete;
 	public:
 		void SetMaxSessions(UInt32 maxSessions);
 		std::vector<Session>& GetSessions();
 		Session& AddClientSocket(SocketHandle socket);
-		static InfoManager* GetInstance();
 		const ChatRoom& GetChatRoom(Int32 index) const;
 	public:
 		void CreateChatRoom(Int32 maxUser, const std::string& title);

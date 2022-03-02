@@ -36,7 +36,7 @@
     <ClInclude Include="ChatRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InfoManager.h">
+    <ClInclude Include="ChatInformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClCompile Include="ChatRoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InfoManager.cpp">
+    <ClCompile Include="ChatInformation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

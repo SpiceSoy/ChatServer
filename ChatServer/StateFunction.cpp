@@ -113,7 +113,7 @@ static std::pair<Int32, const Char*> CommandSwitch(const Char* input, const Char
 }
 
 static constexpr Int32 COMMAND_SWITCH_H = 0;
-static constexpr Int32 COMMAND_SWITCH_UL = 1;
+static constexpr Int32 COMMAND_SWITCH_US = 1;
 static constexpr Int32 COMMAND_SWITCH_LT = 2;
 static constexpr Int32 COMMAND_SWITCH_ST = 3;
 static constexpr Int32 COMMAND_SWITCH_PF = 4;
@@ -122,6 +122,22 @@ static constexpr Int32 COMMAND_SWITCH_O = 6;
 static constexpr Int32 COMMAND_SWITCH_J = 7;
 static constexpr Int32 COMMAND_SWITCH_X = 8;
 static Void SendCommandHelp(OJT::Session& session)
+{
+	session.SendText("---------------------------------------------------------------\r\n");
+	session.SendText("H                           명령어 안내\r\n");
+	session.SendText("US                          이용자 목록 보기\r\n");
+	session.SendText("LT                          대화방 목록 보기\r\n");
+	session.SendText("ST [방번호]                 대화방 정보 보기\r\n");
+	session.SendText("PF [상대방ID]               이용자 정보 보기\r\n");
+	session.SendText("TO [상대방ID] [메시지]      쪽지 보내기\r\n");
+	session.SendText("O  [최대인원] [방제목]      대화방 만들기\r\n");
+	session.SendText("J  [방번호]                 대화방 참여하기\r\n");
+	session.SendText("X                           끝내기 \r\n");
+	session.SendText("---------------------------------------------------------------\r\n");
+	session.SendText("명령어 안내(H) 종료(X)\r\n");
+}
+
+static Void SendUserList(OJT::Session& session)
 {
 	session.SendText("---------------------------------------------------------------\r\n");
 	session.SendText("H                           명령어 안내\r\n");
@@ -164,7 +180,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, const Char*
 		SendCommandHelp(session);
 	}
 	break;
-	case COMMAND_SWITCH_UL:
+	case COMMAND_SWITCH_US:
 	{
 	}
 	break;
