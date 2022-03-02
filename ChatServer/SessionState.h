@@ -17,5 +17,6 @@ namespace OJT
 		WAIT_LOGIN,
 		MAIN_MENU,
 		CHAT_ROOM,
+		CLOSE
 	};
 }

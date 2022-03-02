@@ -59,6 +59,12 @@ void OJT::Session::SendText(const Char* message)
 	SendByte(reinterpret_cast<const Byte*>(message), strlen(message) * sizeof(Char));
 }
 
+void OJT::Session::Close()
+{
+	if(Socket != 0) closesocket(this->Socket);
+	State = SessionState::CLOSE;
+}
+
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
 	if (SendBytes == 0)

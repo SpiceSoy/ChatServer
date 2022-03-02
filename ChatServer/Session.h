@@ -46,6 +46,7 @@ namespace OJT
 		void ProcessSend();
 		void ProcessRecive();
 		void SendText(const Char* message);
+		void Close();
 	private:
 		void SendByte(const Byte* data, UInt64 size);
 	protected:
