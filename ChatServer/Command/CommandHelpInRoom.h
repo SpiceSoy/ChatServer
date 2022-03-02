@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file ICommand.h
+// @file CommandHelpInRoom.h
 //
-// @brief interface of commands (H, Q, LOGIN, etc..)
+// @brief command class of help in room
 // 
 // @date 2022/03/02
 //
@@ -10,17 +10,15 @@
 
 
 #pragma once
-#include "../DataTypes.h" // TODO: 이거 절대경로로 어떻게 바꾸는지 물어보기
+#include "../Command/ICommand.h"
 namespace OJT
 {
-	class Session;
-	class ChatInformation;
 	namespace ChatCommand
 	{
-		class ICommand
+		class CommandHelpInRoom : public ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) = 0;
+			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) override;
 		};
 	};
 };

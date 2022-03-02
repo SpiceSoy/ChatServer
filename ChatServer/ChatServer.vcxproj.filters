@@ -51,6 +51,39 @@
     <ClInclude Include="Command\ICommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Command\CommandEnterRoom.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandExit.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandHelpInMenu.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandMakeRoom.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandQuitRoom.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandRoomInfo.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandRoomList.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandUserInfo.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandUserList.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandWhisper.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandHelpInRoom.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp">
@@ -73,6 +106,39 @@
     </ClCompile>
     <ClCompile Include="ChatInformation.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandEnterRoom.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandExit.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandHelpInMenu.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandMakeRoom.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandQuitRoom.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandRoomInfo.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandRoomList.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandUserInfo.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandUserList.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandWhisper.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandHelpInRoom.cpp">
+      <Filter>Source Files\Command</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
