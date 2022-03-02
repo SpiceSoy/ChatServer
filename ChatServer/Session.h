@@ -31,7 +31,9 @@ namespace OJT
 		SessionState State = SessionState::EMPTY;
 		int RoomNumber = 0;
 		std::string Id;
-		
+
+		std::string AddressText;
+		UInt16 Port;
 	public:
 		Session(SocketHandle socket)
 			: Socket(socket), ReadBuffer{ 0, }
@@ -40,6 +42,7 @@ namespace OJT
 
 		SocketHandle GetSocket() const;
 		Bool HasSendBytes() const;
+		const std::string& GetId() const;
 
 	public:
 		void SetState(SessionState state);
@@ -48,7 +51,8 @@ namespace OJT
 		void SendText(const Char* message);
 		void Close();
 		void SetId(const Char* name);
-		const std::string& GetId() const;
+		void SetAddress(const Char* address, UInt16 port);
+		void LogInput(const Char* input) const;
 	private:
 		void SendByte(const Byte* data, UInt64 size);
 	protected:

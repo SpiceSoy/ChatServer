@@ -31,6 +31,7 @@ static void SplitCommand(const Char* input, const Char** command, const Char** a
 		csr++;
 	}
 }
+
 static Bool StartWith(const Char* input, const Char* command)
 {
 	Int64 csr = 0;
@@ -55,7 +56,6 @@ void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, const Char
 	SplitCommand(input, &command, &argument);
 	if (StartWith(command, "LOGIN") && ValidArgument(argument))
 	{
-		std::cout << "Login : " << argument;
 		session.SetState(SessionState::MAIN_MENU);
 		session.SetId(argument);
 	}

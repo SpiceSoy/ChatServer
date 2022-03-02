@@ -120,10 +120,14 @@ void OJT::ChatServer::Select()
 			char buffer[512];
 			ZeroMemory(buffer, sizeof(buffer));
 			const char* addrString = inet_ntop(AF_INET, (SOCKADDR*)&clientAddr.sin_addr, buffer, sizeof(buffer));
-			std::cout << "Connection : IP Address = " << addrString << "\n";
-			std::cout << addrString << "\n";
+
+			UInt16 port = ntohs(clientAddr.sin_port);
+
 			Session& clientSession = AddClientSocket(clientSocket);
+			clientSession.SetAddress(addrString, port);
 			clientSession.SetState(SessionState::WAIT_LOGIN);
+
+			clientSession.LogInput("connected");
 		}
 	}
 	//Recv

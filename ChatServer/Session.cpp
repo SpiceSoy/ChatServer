@@ -44,7 +44,8 @@ void OJT::Session::ProcessRecive()
 	Char* expectEnd = reinterpret_cast<Char*>(ReadBuffer.data() + RecvBytes);
 	if (expectEnd[0] == '\n')
 	{
-		expectEnd[1] = 0;
+		expectEnd[0] = '\0';
+		if (expectEnd != reinterpret_cast<Char*>(ReadBuffer.data())) *(expectEnd - 1) = '\0';
 		OnReciveLine(reinterpret_cast<const Char*>(ReadBuffer.data()));
 		RecvBytes = 0;
 	}
@@ -67,13 +68,19 @@ void OJT::Session::Close()
 
 const std::string& OJT::Session::GetId() const
 {
-	return this->Id;
+	return Id;
 }
 
 void OJT::Session::SetId(const Char* name)
 {
-	this->Id = name;
+	Id = name;
 }
+
+void OJT::Session::SetAddress(const Char* address, UInt16 port)
+{
+	AddressText = address;
+	Port = port;
+} 
 
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
@@ -104,6 +111,11 @@ void OJT::Session::SendByte(const Byte* data, UInt64 size)
 	}
 }
 
+void OJT::Session::LogInput(const Char* input) const
+{
+	std::cout << AddressText << ":" << Port << "[" << Id << "] " << input << "\r\n";
+}
+
 void OJT::Session::OnStateChenge(SessionState newState)
 {
 	switch (newState)
@@ -116,6 +128,7 @@ void OJT::Session::OnStateChenge(SessionState newState)
 
 void OJT::Session::OnReciveLine(const Char* input)
 {
+	LogInput(input);
 	switch (State)
 	{
 		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateReciveLine(*this, input); break;
