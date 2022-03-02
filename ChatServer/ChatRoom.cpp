@@ -68,6 +68,9 @@ void OJT::ChatRoom::EnterUser(Session& session)
 
 void OJT::ChatRoom::ExitUser(Session& session)
 {
+	BroadCastText("**");
+	BroadCastText(session.GetId().c_str());
+	BroadCastText("´ÔÀÌ ³ª°¡¼Ì½À´Ï´Ù.\r\n");
 	Sessions.erase(&session);
 }
 

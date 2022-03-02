@@ -266,10 +266,54 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 	break;
 	case COMMAND_SWITCH_PF:
 	{
+		if (information.HasId(argument))
+		{
+			const Session& targetSession = information.FindSession(argument);
+			auto room = targetSession.GetChatRoom();
+			std::stringstream sstream;
+			if (room != nullptr)
+			{
+				sstream << targetSession.GetId() << "님은 현재 " << information.GetChatRoomIndex(*room) + 1 << "번 방에 참여중입니다.\r\n";
+			}
+			else 
+			{
+				sstream << targetSession.GetId() << "님은 현재 메인 메뉴에서 대기중입니다.\r\n";
+			}
+			session.SendText(sstream.str().c_str());
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else 
+		{
+			session.SendText("해당 ID를 가진 유저가 존재하지 않습니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
 	}
 	break;
 	case COMMAND_SWITCH_TO:
 	{
+		std::stringstream sstream;
+		sstream.str(argument);
+		std::string id;
+		std::string text;
+		sstream >> id >> text;
+		if (sstream.bad())
+		{
+			session.SendText("인자가 옳바르지 않습니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else if (information.HasId(id))
+		{
+			sstream.clear();
+			Session& targetSession = information.FindSession(id);
+			sstream << "# " << session.GetId() << "님의 쪽지 ==> " << text << "\r\n";
+			targetSession.SendText(sstream.str().c_str());
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else
+		{
+			session.SendText("해당 ID를 가진 유저가 존재하지 않습니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
 	}
 	break;
 	case COMMAND_SWITCH_O:
@@ -332,6 +376,8 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 	break;
 	case COMMAND_SWITCH_X:
 	{
+		session.SendText("연결을 종료합니다. 이용해주셔서 감사합니다. \r\n");
+		session.Close();
 	}
 	break;
 
@@ -348,7 +394,6 @@ void OJT::StateFunction::OnChatRoomStateEnter(Session& session, ChatInformation&
 		session.SetState(SessionState::MAIN_MENU);
 		return;
 	}
-	room->BroadCastText(session.GetId().c_str());
 	std::stringstream sstream;
 	sstream << "** " << session.GetId() << "님이 들어오셨습니다. (현재인원 " << room->GetCurrentUserCount() << "/" << room->GetMaxUser() << ")\r\n";
 	room->BroadCastText(sstream.str().c_str());

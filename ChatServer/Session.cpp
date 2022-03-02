@@ -63,7 +63,9 @@ void OJT::Session::SendText(const Char* message)
 
 void OJT::Session::Close()
 {
-	if(Socket != 0) closesocket(this->Socket);
+	if (Socket == 0) return;
+	closesocket(this->Socket);
+	if(Room != nullptr) Room->ExitUser(*this);
 	State = SessionState::CLOSE;
 }
 
@@ -85,6 +87,11 @@ UInt16 OJT::Session::GetPort() const
 OJT::ChatRoom* OJT::Session::GetChatRoom() const
 {
 	return Room;
+}
+
+Bool OJT::Session::IsClosed() const
+{
+	return State == SessionState::CLOSE;
 }
 
 void OJT::Session::SetId(const Char* name)

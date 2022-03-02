@@ -39,12 +39,11 @@ void OJT::ChatServer::Initialize(UInt16 port)
 void OJT::ChatServer::InitializeSocket()
 {
 	std::cout << "Initialize Socket\n";
-	int ret = 0;
 	WORD version = MAKEWORD(2, 2);
 	WSADATA wsaData;
 	ZeroMemory(&wsaData, sizeof(wsaData));
-	ret = WSAStartup(version, &wsaData);
-	if (ret != 0)
+	Int32 initResult = WSAStartup(version, &wsaData);
+	if (initResult != 0)
 	{
 		PrintLastErrorMessageInFile("Init");
 		exit(0);
@@ -70,8 +69,8 @@ void OJT::ChatServer::BindListenSocket()
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
 	serverAddress.sin_port = htons(ListenPort);
-	int ret = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
-	if (ret == SOCKET_ERROR)
+	int bindResult = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
+	if (bindResult == SOCKET_ERROR)
 	{
 		PrintLastErrorMessageInFile("Bind");
 		exit(0);
@@ -81,8 +80,8 @@ void OJT::ChatServer::BindListenSocket()
 void OJT::ChatServer::StartListen()
 {
 	std::cout << "Start Listen\n";
-	int ret = listen(ListenSocket, SOMAXCONN);
-	if (ret == SOCKET_ERROR)
+	int listenResult = listen(ListenSocket, SOMAXCONN);
+	if (listenResult == SOCKET_ERROR)
 	{
 		PrintLastErrorMessageInFile("StartListen");
 		exit(0);
@@ -144,6 +143,7 @@ void OJT::ChatServer::Select()
 		if (!FD_ISSET(session->GetSocket(), &write)) continue;
 		session->ProcessSend();
 	}
+	Information.EraseClosedSessions();
 }
 
 void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking)

@@ -14,9 +14,8 @@
 
 void OJT::ChatInformation::SetMaxSessions(UInt32 maxSessions)
 {
-	Sessions.reserve(maxSessions);
 }
-const std::vector<std::unique_ptr<OJT::Session>>& OJT::ChatInformation::GetSessions()
+const std::list<std::unique_ptr<OJT::Session>>& OJT::ChatInformation::GetSessions() const
 {
 	return Sessions;
 }
@@ -61,9 +60,40 @@ Bool OJT::ChatInformation::HasId(const std::string& id) const
 	return IdMap.count(id);
 }
 
+OJT::Session& OJT::ChatInformation::FindSession(const std::string& id) const
+{
+	return *IdMap.at(id);
+}
+
 const std::map<std::string, OJT::Session*>& OJT::ChatInformation::GetIdMap() const
 {
 	return IdMap;
+}
+
+void OJT::ChatInformation::EraseClosedSessions()
+{
+	auto it = Sessions.begin();
+	while (true)
+	{
+		it = std::find_if(Sessions.begin(), Sessions.end(), [](const std::unique_ptr<Session>& a) {return a.get()->IsClosed(); });
+		if (it == Sessions.end()) break;
+		else
+		{
+			IdMap.erase((*it)->GetId());
+			it = Sessions.erase(it);
+		}
+	}
+}
+
+void OJT::ChatInformation::EraseEmptyChatRooms()
+{
+	auto it = ChatRooms.begin();
+	while (true)
+	{
+		it = std::find_if(ChatRooms.begin(), ChatRooms.end(), [](const std::unique_ptr<ChatRoom>& a) {return a.get()->GetCurrentUserCount() == 0; });
+		if (it == ChatRooms.end()) break;
+		else it = ChatRooms.erase(it);
+	}
 }
 
 OJT::ChatRoom& OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)

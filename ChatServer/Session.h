@@ -31,7 +31,6 @@ namespace OJT
 		std::array<Byte, 2048> SendBuffer;
 
 		SessionState State = SessionState::EMPTY;
-		int RoomNumber = 0;
 		std::string Id;
 
 		std::string AddressText;
@@ -50,11 +49,12 @@ namespace OJT
 		const std::string& GetAddress() const;
 		UInt16 GetPort() const;
 		ChatRoom* GetChatRoom() const;
+		Bool IsClosed() const;
 	public:
 		void SetState(SessionState state);
 		void ProcessSend();
 		void ProcessRecive();
-		void SendText(const Char* message);
+		void SendText(const Char* message); // 시간 여유로우면 가변인자 버전 추가 및 sstream 전부 변경 예정
 		void Close();
 		void SetId(const Char* name);
 		void SetChatRoom(ChatRoom* room);

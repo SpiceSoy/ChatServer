@@ -30,5 +30,6 @@ using Char = char;
 using Byte = unsigned char;
 
 using SocketHandle = UInt32;
+using ResultCode = Int32;
 
 
