@@ -24,6 +24,7 @@
 
 constexpr UInt64 commandBufferSize = 50;
 constexpr UInt64 chatBufferSize = 1024;
+constexpr UInt32 userWidth = 30;
 
 static void SplitCommand(const Char* input, const Char** command, const Char** argument)
 {
@@ -152,23 +153,6 @@ static Void SendCommandHelp(OJT::Session& session)
 	session.SendText("명령어 안내(H) 종료(X)\r\n");
 }
 
-static Void SendUserList(OJT::Session& session)
-{
-	session.SendText("---------------------------------------------------------------\r\n");
-	session.SendText("H                           명령어 안내\r\n");
-	session.SendText("US                          이용자 목록 보기\r\n");
-	session.SendText("LT                          대화방 목록 보기\r\n");
-	session.SendText("ST [방번호]                 대화방 정보 보기\r\n");
-	session.SendText("PF [상대방ID]               이용자 정보 보기\r\n");
-	session.SendText("TO [상대방ID] [메시지]      쪽지 보내기\r\n");
-	session.SendText("O  [최대인원] [방제목]      대화방 만들기\r\n");
-	session.SendText("J  [방번호]                 대화방 참여하기\r\n");
-	session.SendText("X                           끝내기 \r\n");
-	session.SendText("---------------------------------------------------------------\r\n");
-	session.SendText("명령어 안내(H) 종료(X)\r\n");
-}
-
-
 void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInformation& information, const Char* input)
 {
 	static const Char* commands[] = { "H", "US", "LT", "ST", "PF", "TO", "O", "J", "X" };
@@ -202,7 +186,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		session.SendText("---------------------------------------------------------------\r\n");
 		for (const auto& otherSession : information.GetSessions())
 		{
-			sstream << " 이용자: " << std::setw(30) << std::left << otherSession->GetId() 
+			sstream << " 이용자: " << std::setw(userWidth) << std::left << otherSession->GetId()
 				<< "접속지: " << otherSession->GetAddress() << ":" << otherSession->GetPort() 
 				<< "\r\n";
 		}
@@ -213,10 +197,71 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 	break;
 	case COMMAND_SWITCH_LT:
 	{
+		std::stringstream sstream; //임시로 사용
+		auto& idMap = information.GetIdMap();
+		session.SendText("---------------------------------------------------------------\r\n");
+		Int32 roomIndex = 1;
+		for (const auto& room : information.GetChatRooms())
+		{
+			sstream << "[" << std::setw(3) << roomIndex << "] (" 
+				<< std::setw(2) << room->GetCurrentUserCount() << "/" << std::setw(2) << room->GetMaxUser() << ") "
+				<< room->GetTitle()
+				<< "\r\n";
+			roomIndex++;
+		}
+		session.SendText(sstream.str().c_str());
+		session.SendText("---------------------------------------------------------------\r\n");
+		session.SendText("명령어 안내(H) 종료(X)\r\n");
 	}
 	break;
 	case COMMAND_SWITCH_ST:
 	{
+		std::stringstream sstream; //임시로 사용
+		sstream.str(argument);
+		constexpr Int32 NOT_IN_ROOM = -1;
+		Int32 roomIndex = NOT_IN_ROOM;
+		ChatRoom* targetRoom = nullptr;
+		sstream >> roomIndex;
+		roomIndex -= 1;
+		if (sstream.bad())
+		{
+			targetRoom = session.GetChatRoom();
+			if (targetRoom != nullptr) roomIndex = information.GetChatRoomIndex(*targetRoom);
+		}
+		else 
+		{
+			targetRoom = &information.GetChatRoom(roomIndex);
+		}
+		if (information.HasChatRoom(roomIndex))
+		{
+			session.SendText("---------------------------------------------------------------\r\n");
+			sstream.clear();
+			sstream << "[" << std::setw(3) << roomIndex << "] ("
+				<< std::setw(2) << targetRoom->GetCurrentUserCount() << "/" << std::setw(2) << targetRoom->GetMaxUser() << ") "
+				<< targetRoom->GetTitle()
+				<< "\r\n";
+			std::time_t createTime = std::chrono::system_clock::to_time_t(targetRoom->GetCreatedTime());
+			std::tm createTm;
+			localtime_s( &createTm, &createTime);
+			sstream << "  개설시간:  " << std::put_time(&createTm, "%T") << "\r\n";
+			for (const auto& member : targetRoom->GetSessions())
+			{
+				std::time_t entryTime = std::chrono::system_clock::to_time_t(targetRoom->GetCreatedTime());
+				std::tm entryTm;
+				localtime_s(&entryTm, &entryTime);
+				sstream << "  참여자: " << std::setw(userWidth) << member->GetId() << "참여시간:   " << std::put_time(&entryTm, "%T") << "\r\n";
+			}
+			session.SendText(sstream.str().c_str());
+			session.SendText("---------------------------------------------------------------\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else 
+		{
+			session.SendText("해당 번호의 방이 존재하지 않습니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+
+
 	}
 	break;
 	case COMMAND_SWITCH_PF:

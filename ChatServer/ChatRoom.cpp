@@ -16,7 +16,7 @@
 
 
 OJT::ChatRoom::ChatRoom(ChatInformation* information)
-	: Information(information)
+	: Information(information), CreatedTime(std::chrono::system_clock::now()), MaxUser(2)
 {
 }
 
@@ -45,6 +45,16 @@ const std::set<OJT::Session*>& OJT::ChatRoom::GetSessions() const
 	return Sessions;
 }
 
+std::chrono::system_clock::time_point OJT::ChatRoom::GetEntryTime(const Session& session) const
+{
+	return EntryTime.at(&session);
+}
+
+std::chrono::system_clock::time_point OJT::ChatRoom::GetCreatedTime() const
+{
+	return CreatedTime;
+}
+
 Int32 OJT::ChatRoom::GetCurrentUserCount() const
 {
 	return Sessions.size();
@@ -53,6 +63,7 @@ Int32 OJT::ChatRoom::GetCurrentUserCount() const
 void OJT::ChatRoom::EnterUser(Session& session)
 {
 	Sessions.emplace(&session);
+	EntryTime.insert(std::make_pair(&session, std::chrono::system_clock::now()));
 }
 
 void OJT::ChatRoom::ExitUser(Session& session)

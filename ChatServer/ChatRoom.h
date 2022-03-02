@@ -12,8 +12,10 @@
 #pragma once
 #include "DataTypes.h"
 #include <set>
+#include <map>
 #include <vector>
 #include <string>
+#include <chrono>
 namespace OJT
 {
 	class ChatInformation;
@@ -23,8 +25,10 @@ namespace OJT
 	private:
 		Int32 MaxUser;
 		std::set<Session*> Sessions;
+		std::map<const Session*, std::chrono::system_clock::time_point> EntryTime; //sessions와 합칠까 고려하다가 세션 자체에만 접근이 필요할 것 같아 분리
 		std::string Title;
 		ChatInformation* const Information = nullptr;
+		std::chrono::system_clock::time_point CreatedTime;
 	public:
 		ChatRoom(ChatInformation* information);
 		~ChatRoom() = default;
@@ -36,6 +40,8 @@ namespace OJT
 		void SetMaxUser(Int32 maxUser);
 
 		const std::set<Session*>& GetSessions() const;
+		std::chrono::system_clock::time_point GetEntryTime(const Session& session) const;
+		std::chrono::system_clock::time_point GetCreatedTime() const;
 		Int32 GetCurrentUserCount() const;
 	public:
 		void EnterUser(Session& session);

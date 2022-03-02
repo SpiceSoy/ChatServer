@@ -33,6 +33,8 @@ namespace OJT
 		Session& AddClientSocket(SocketHandle socket);
 		Bool HasChatRoom(Int32 index) const;
 		ChatRoom& GetChatRoom(Int32 index) const;
+		Int32 GetChatRoomIndex(ChatRoom& room) const;
+		const std::vector<std::unique_ptr<ChatRoom>>& GetChatRooms() const;
 		void SetId(Session& session, const std::string& id);
 		Bool HasId(const std::string& id) const;
 		const std::map<std::string, Session*>& GetIdMap() const;

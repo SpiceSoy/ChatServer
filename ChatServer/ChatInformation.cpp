@@ -38,6 +38,19 @@ OJT::ChatRoom& OJT::ChatInformation::GetChatRoom(Int32 index) const
 	return *ChatRooms.at(index);
 }
 
+Int32 OJT::ChatInformation::GetChatRoomIndex(ChatRoom& room) const
+{
+	ChatRoom* roomAddr = &room;
+	auto it = std::find_if(ChatRooms.begin(), ChatRooms.end(), [roomAddr](auto& a) { return a.get() == roomAddr; });
+	auto index = std::distance(ChatRooms.begin(), it);
+	return index;
+}
+
+const std::vector<std::unique_ptr<OJT::ChatRoom>>& OJT::ChatInformation::GetChatRooms() const
+{
+	return ChatRooms;
+}
+
 void OJT::ChatInformation::SetId(Session& session, const std::string& id)
 {
 	IdMap.insert(std::make_pair(id, &session));
