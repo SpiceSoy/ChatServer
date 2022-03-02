@@ -12,7 +12,7 @@
 #pragma once
 #include "SessionState.h"
 #include "DataTypes.h"
-#include <array>
+#include <vector>
 #include <string>
 namespace OJT
 {
@@ -23,12 +23,10 @@ namespace OJT
 	private:
 		SocketHandle Socket;
 		UInt64 RecvBytes = 0;
-		std::array<Byte, 512> ReadBuffer;
+		std::vector<Byte> ReadBuffer;
 
-		UInt64 SendBufferCsr = 0;
-		UInt64 SendStartCsr = 0;
 		UInt64 SendBytes = 0;
-		std::array<Byte, 2048> SendBuffer;
+		std::vector<Byte> SendBuffer;
 
 		SessionState State = SessionState::EMPTY;
 		std::string Id;
@@ -39,8 +37,10 @@ namespace OJT
 		ChatRoom* Room = nullptr;
 	public:
 		Session(SocketHandle socket, ChatInformation* information)
-			: Socket(socket), ReadBuffer{ 0, }, Information(information)
+			: Socket(socket), Information(information)
 		{
+			ReadBuffer.resize(1024);
+			SendBuffer.resize(1024);
 		};
 
 		SocketHandle GetSocket() const;

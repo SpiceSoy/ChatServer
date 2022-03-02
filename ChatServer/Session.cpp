@@ -34,15 +34,17 @@ void OJT::Session::SetState(SessionState state)
 
 void OJT::Session::ProcessSend()
 {
-	Int64 currentSize = SendStartCsr + SendBytes > SendBuffer.size() ? SendBuffer.size() - SendStartCsr : SendBytes;
-	Int32 sentBytes = send(Socket, (const char*)SendBuffer.data() + SendStartCsr, currentSize, 0);
+	Int32 sentBytes = send(Socket, (const char*)SendBuffer.data(), SendBytes, 0);
 	if (sentBytes == SOCKET_ERROR)
 	{
 		NetworkUtill::PrintLastErrorMessage("send", __FILE__, __LINE__);
 		Close();
 	}
-	SendStartCsr = (SendStartCsr + currentSize) % SendBuffer.size();
-	SendBytes -= currentSize;
+	else 
+	{
+		memcpy_s(SendBuffer.data(), SendBytes - sentBytes, SendBuffer.data() + sentBytes, SendBytes - sentBytes); //메모리 땡기기
+		SendBytes -= sentBytes;
+	}
 }
 
 void OJT::Session::ProcessRecive()
@@ -65,6 +67,7 @@ void OJT::Session::ProcessRecive()
 		else
 		{
 			RecvBytes += recivedBytes;
+			if (ReadBuffer.size() < RecvBytes * 1.5) ReadBuffer.resize(ReadBuffer.size() * 2);
 		}
 	}
 }
@@ -127,31 +130,9 @@ void OJT::Session::SetAddress(const Char* address, UInt16 port)
 void OJT::Session::SendByte(const Byte* data, UInt64 size)
 {
 	if (IsClosed()) return;
-	if (SendBytes == 0)
-	{
-		SendStartCsr = 0;
-		SendBufferCsr = 0;
-	}
-	Int64 csrMessage = 0;
-	Int64 remainSize = size;
-	SendBytes += remainSize;
-	while (remainSize != 0)
-	{
-		Int64 currentSendSize = 0;
-		if (SendBufferCsr + SendBytes > SendBuffer.size()) // 버퍼 넘치면
-		{
-			currentSendSize = SendBufferCsr + SendBytes - SendBuffer.size();
-		}
-		else
-		{
-			currentSendSize = remainSize;
-		}
-
-		memcpy_s(SendBuffer.data() + SendBufferCsr, currentSendSize, data + csrMessage, currentSendSize);
-		SendBufferCsr = (SendBufferCsr + currentSendSize) % SendBuffer.size();
-		csrMessage += currentSendSize;
-		remainSize -= currentSendSize;
-	}
+	if (SendBytes + size > SendBuffer.size()) SendBuffer.resize(SendBuffer.size() * 2);
+	memcpy_s(SendBuffer.data() + SendBytes, size, data, size);
+	SendBytes += size;
 }
 
 void OJT::Session::LogInput(const Char* input) const

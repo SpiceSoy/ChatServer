@@ -119,9 +119,9 @@ void OJT::ChatServer::Select()
 		if (clientSocket == INVALID_SOCKET) PrintLastErrorMessageInFile("Accept");
 		else
 		{
-			char buffer[512];
-			ZeroMemory(buffer, sizeof(buffer));
-			const char* addrString = inet_ntop(AF_INET, (SOCKADDR*)&clientAddr.sin_addr, buffer, sizeof(buffer));
+			char addressStringBuffer[512];
+			ZeroMemory(addressStringBuffer, sizeof(addressStringBuffer));
+			const char* addrString = inet_ntop(AF_INET, (SOCKADDR*)&clientAddr.sin_addr, addressStringBuffer, sizeof(addressStringBuffer));
 
 			UInt16 port = ntohs(clientAddr.sin_port);
 
