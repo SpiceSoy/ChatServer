@@ -9,10 +9,16 @@
 //=================================================================================================
 
 
+// TODO: 이 후 클래스로 분리 필요
+// 커맨드 해석.. sstream으로 바꿀 준비
 #include "StateFunction.h"
 #include "SessionState.h"
 #include "Session.h"
+#include "ChatInformation.h"
 #include <iostream>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 #define ARRAYSIZE(A) sizeof(A) / sizeof((A)[0])
 
@@ -45,21 +51,30 @@ static Bool ValidArgument(const Char* argument)
 	return *argument != '\0' && *argument != '\n' && *argument != ' ';
 }
 
-void OJT::StateFunction::OnWaitLoginStateEnter(Session& session)
+void OJT::StateFunction::OnWaitLoginStateEnter(Session& session, ChatInformation& information)
 {
 	session.SendText("** 안녕하세요. 텍스트 채팅 서버 ver 0.1입니다.\r\n");
 	session.SendText("** 로그인 명령어(LOGIN)를 사용해주세요.\r\n");
 }
 
-void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, const Char* input)
+void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, ChatInformation& information, const Char* input)
 {
 	const Char* command = nullptr;
 	const Char* argument = nullptr;
 	SplitCommand(input, &command, &argument);
-	if (StartWith(command, "LOGIN") && ValidArgument(argument))
+	if (StartWith(command, "LOGIN") && ValidArgument(argument) )
 	{
-		session.SetState(SessionState::MAIN_MENU);
-		session.SetId(argument);
+		if (!information.HasId(argument))
+		{
+			session.SetState(SessionState::MAIN_MENU);
+			session.SetId(argument);
+			information.SetId(session, argument);
+		} 
+		else 
+		{
+			session.SendText("** 이미 해당 아이디가 서버에 존재합니다.\r\n");
+		}
+
 	}
 	else
 	{
@@ -67,7 +82,7 @@ void OJT::StateFunction::OnWaitLoginStateReciveLine(Session& session, const Char
 	}
 }
 
-void OJT::StateFunction::OnMainMenuStateEnter(Session& session)
+void OJT::StateFunction::OnMainMenuStateEnter(Session& session, ChatInformation& information)
 {
 	session.SendText("---------------------------------------------------------------\r\n");
 	session.SendText("반갑습니다. 텍스트 채팅 서버 ver 0.1 입니다.\r\n\r\n");
@@ -154,7 +169,7 @@ static Void SendUserList(OJT::Session& session)
 }
 
 
-void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, const Char* input)
+void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInformation& information, const Char* input)
 {
 	static const Char* commands[] = { "H", "US", "LT", "ST", "PF", "TO", "O", "J", "X" };
 	static bool shouldArgument[] = { 0,0,0,1,1,1,1,1,0 };
@@ -182,6 +197,18 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, const Char*
 	break;
 	case COMMAND_SWITCH_US:
 	{
+		std::stringstream sstream; //임시로 사용
+		auto& idMap = information.GetIdMap();
+		session.SendText("---------------------------------------------------------------\r\n");
+		for (const auto& otherSession : information.GetSessions())
+		{
+			sstream << " 이용자: " << std::setw(30) << std::left << otherSession.GetId() 
+				<< "접속지: " << otherSession.GetAddress() << ":" << otherSession.GetPort() 
+				<< "\r\n";
+		}
+		session.SendText(sstream.str().c_str());
+		session.SendText("---------------------------------------------------------------\r\n");
+		session.SendText("명령어 안내(H) 종료(X)\r\n");
 	}
 	break;
 	case COMMAND_SWITCH_LT:
@@ -202,6 +229,28 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, const Char*
 	break;
 	case COMMAND_SWITCH_O:
 	{
+		std::stringstream sstream;
+		sstream.str(argument);
+		Int32 maxUser = 0;
+		std::string title;
+		sstream >> maxUser >> title;
+		if (sstream.bad())
+		{
+			session.SendText("명령어 인자가 이상합니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else 
+		{
+			if (maxUser < 2 || maxUser > 20)
+			{
+				session.SendText("대화방 인원을 2-20명 사이로 입력해주세요.\r\n");
+			}
+			else 
+			{
+				information.CreateChatRoom(maxUser, title);
+				session.SendText("대화방이 개설되었습니다.\r\n");
+			}
+		}
 	}
 	break;
 	case COMMAND_SWITCH_J:
@@ -218,11 +267,11 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, const Char*
 	}
 }
 
-void OJT::StateFunction::OnChatRoomStateEnter(Session& session)
+void OJT::StateFunction::OnChatRoomStateEnter(Session& session, ChatInformation& information)
 {
 }
 
-void OJT::StateFunction::OnChatRoomStateReciveLine(Session& session, const Char* input)
+void OJT::StateFunction::OnChatRoomStateReciveLine(Session& session, ChatInformation& information, const Char* input)
 {
 }
 

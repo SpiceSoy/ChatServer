@@ -45,7 +45,8 @@ namespace OJT
 		SocketHandle GetSocket() const;
 		Bool HasSendBytes() const;
 		const std::string& GetId() const;
-
+		const std::string& GetAddress() const;
+		UInt16 GetPort() const;
 	public:
 		void SetState(SessionState state);
 		void ProcessSend();

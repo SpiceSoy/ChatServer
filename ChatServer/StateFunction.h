@@ -14,15 +14,16 @@
 namespace OJT
 {
 	struct Session;
+	class ChatInformation;
 	namespace StateFunction // 상태패턴 클래스로 뽑을까 하다가 그 정도는 아닌 것 같아서 함수로 해결
 	{
-		void OnWaitLoginStateEnter(Session& session);
-		void OnWaitLoginStateReciveLine(Session& session, const Char* input);
+		void OnWaitLoginStateEnter(Session& session, ChatInformation& information);
+		void OnWaitLoginStateReciveLine(Session& session, ChatInformation& information, const Char* input);
 
-		void OnMainMenuStateEnter(Session& session);
-		void OnMainMenuStateReciveLine(Session& session, const Char* input);
+		void OnMainMenuStateEnter(Session& session, ChatInformation& information);
+		void OnMainMenuStateReciveLine(Session& session, ChatInformation& information, const Char* input);
 
-		void OnChatRoomStateEnter(Session& session);
-		void OnChatRoomStateReciveLine(Session& session, const Char* input);
+		void OnChatRoomStateEnter(Session& session, ChatInformation& information);
+		void OnChatRoomStateReciveLine(Session& session, ChatInformation& information, const Char* input);
 	};
 };

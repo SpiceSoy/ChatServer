@@ -11,6 +11,7 @@
 
 #include "Session.h"
 #include "StateFunction.h"
+#include "ChatInformation.h"
 #include <WinSock2.h>
 #include <iostream>
 
@@ -71,6 +72,16 @@ const std::string& OJT::Session::GetId() const
 	return Id;
 }
 
+const std::string& OJT::Session::GetAddress() const
+{
+	return AddressText;
+}
+
+UInt16 OJT::Session::GetPort() const
+{
+	return Port;
+}
+
 void OJT::Session::SetId(const Char* name)
 {
 	Id = name;
@@ -121,9 +132,9 @@ void OJT::Session::OnStateChenge(SessionState newState)
 {
 	switch (newState)
 	{
-		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateEnter(*this); break;
-		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateEnter(*this); break;
-		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateEnter(*this); break;
+		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateEnter(*this, *Information); break;
+		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateEnter(*this, *Information); break;
+		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateEnter(*this, *Information); break;
 	}
 }
 
@@ -132,8 +143,8 @@ void OJT::Session::OnReciveLine(const Char* input)
 	LogInput(input);
 	switch (State)
 	{
-		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateReciveLine(*this, input); break;
-		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateReciveLine(*this, input); break;
-		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateReciveLine(*this, input); break;
+		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateReciveLine(*this, *Information, input); break;
+		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateReciveLine(*this, *Information, input); break;
+		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateReciveLine(*this, *Information, input); break;
 	}
 }

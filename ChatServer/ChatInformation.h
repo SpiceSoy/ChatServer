@@ -31,6 +31,9 @@ namespace OJT
 		std::vector<Session>& GetSessions();
 		Session& AddClientSocket(SocketHandle socket);
 		const ChatRoom& GetChatRoom(Int32 index) const;
+		void SetId(Session& session, const std::string& id);
+		Bool HasId(const std::string& id) const;
+		const std::map<std::string, Int32>& GetIdMap() const;
 	public:
 		void CreateChatRoom(Int32 maxUser, const std::string& title);
 	};
