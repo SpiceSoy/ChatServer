@@ -16,6 +16,7 @@
 #include <string>
 namespace OJT
 {
+	class ChatRoom;
 	class ChatInformation;
 	class Session
 	{
@@ -35,7 +36,8 @@ namespace OJT
 
 		std::string AddressText;
 		UInt16 Port;
-		ChatInformation* Information;
+		ChatInformation * const Information = nullptr;
+		ChatRoom* Room = nullptr;
 	public:
 		Session(SocketHandle socket, ChatInformation* information)
 			: Socket(socket), ReadBuffer{ 0, }, Information(information)
@@ -54,6 +56,7 @@ namespace OJT
 		void SendText(const Char* message);
 		void Close();
 		void SetId(const Char* name);
+		void SetChatRoom(ChatRoom* room);
 		void SetAddress(const Char* address, UInt16 port);
 		void LogInput(const Char* input) const;
 	private:

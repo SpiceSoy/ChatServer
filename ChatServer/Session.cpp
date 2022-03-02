@@ -87,6 +87,11 @@ void OJT::Session::SetId(const Char* name)
 	Id = name;
 }
 
+void OJT::Session::SetChatRoom(ChatRoom* room)
+{
+	Room = room;
+}
+
 void OJT::Session::SetAddress(const Char* address, UInt16 port)
 {
 	AddressText = address;

@@ -16,27 +16,26 @@ void OJT::ChatInformation::SetMaxSessions(UInt32 maxSessions)
 {
 	Sessions.reserve(maxSessions);
 }
-std::vector<OJT::Session>& OJT::ChatInformation::GetSessions()
+const std::vector<std::unique_ptr<OJT::Session>>& OJT::ChatInformation::GetSessions()
 {
 	return Sessions;
 }
 
 OJT::Session& OJT::ChatInformation::AddClientSocket(SocketHandle socket)
 {
-	Sessions.emplace_back(socket, this);
-	auto& result = Sessions.back();
-	return Sessions.back();
+	Sessions.emplace_back(std::make_unique<Session>(socket, this));
+	auto& result = *Sessions.back();
+	return result;
 }
 
 const OJT::ChatRoom& OJT::ChatInformation::GetChatRoom(Int32 index) const
 {
-	return ChatRooms.at(index);
+	return *ChatRooms.at(index);
 }
 
 void OJT::ChatInformation::SetId(Session& session, const std::string& id)
 {
-	Int32 index = std::distance(Sessions.data(), &session);
-	IdMap.insert(std::make_pair(id, index));
+	IdMap.insert(std::make_pair(id, &session));
 }
 
 Bool OJT::ChatInformation::HasId(const std::string& id) const
@@ -44,15 +43,16 @@ Bool OJT::ChatInformation::HasId(const std::string& id) const
 	return IdMap.count(id);
 }
 
-const std::map<std::string, Int32>& OJT::ChatInformation::GetIdMap() const
+const std::map<std::string, OJT::Session*>& OJT::ChatInformation::GetIdMap() const
 {
 	return IdMap;
 }
 
-void OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)
+OJT::ChatRoom& OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)
 {
 	ChatRooms.emplace_back();
-	auto& last = ChatRooms.back();
+	auto& last = *ChatRooms.back();
 	last.SetMaxUser(maxUser);
 	last.SetTitle(title);
+	return last;
 }

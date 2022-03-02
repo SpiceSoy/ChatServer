@@ -202,8 +202,8 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 		session.SendText("---------------------------------------------------------------\r\n");
 		for (const auto& otherSession : information.GetSessions())
 		{
-			sstream << " 이용자: " << std::setw(30) << std::left << otherSession.GetId() 
-				<< "접속지: " << otherSession.GetAddress() << ":" << otherSession.GetPort() 
+			sstream << " 이용자: " << std::setw(30) << std::left << otherSession->GetId() 
+				<< "접속지: " << otherSession->GetAddress() << ":" << otherSession->GetPort() 
 				<< "\r\n";
 		}
 		session.SendText(sstream.str().c_str());
@@ -247,7 +247,9 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			}
 			else 
 			{
-				information.CreateChatRoom(maxUser, title);
+				ChatRoom& room = information.CreateChatRoom(maxUser, title);
+				session.SetChatRoom(&room);
+				session.SetState(SessionState::CHAT_ROOM);
 				session.SendText("대화방이 개설되었습니다.\r\n");
 			}
 		}

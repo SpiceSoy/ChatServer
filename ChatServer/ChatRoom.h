@@ -16,14 +16,16 @@
 #include <string>
 namespace OJT
 {
+	class ChatInformation;
 	class ChatRoom
 	{
 	private:
 		Int32 MaxUser;
 		std::set<UInt32> Sessions;
 		std::string Title;
+		ChatInformation* const Information = nullptr;
 	public:
-		ChatRoom() = default;
+		ChatRoom(ChatInformation* information);
 		~ChatRoom() = default;
 
 		const std::string& GetTitle() const;
@@ -32,6 +34,7 @@ namespace OJT
 		Int32 GetMaxUser() const;
 		void SetMaxUser(Int32 maxUser);
 
+		const std::set<UInt32>& GetSessions() const;
 		Int32 GetCurrentUserCount() const;
 	public:
 		void EnterUser(UInt32 sessionIndex);

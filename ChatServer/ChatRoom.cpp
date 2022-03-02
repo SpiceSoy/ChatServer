@@ -10,9 +10,15 @@
 
 
 #include "ChatRoom.h"
+#include "ChatInformation.h"
 #include <string>
 #include <vector>
 
+
+OJT::ChatRoom::ChatRoom(ChatInformation* information)
+	: Information(information)
+{
+}
 
 const std::string& OJT::ChatRoom::GetTitle() const
 {
@@ -32,6 +38,11 @@ Int32 OJT::ChatRoom::GetMaxUser() const
 void OJT::ChatRoom::SetMaxUser(Int32 maxUser)
 {
 	MaxUser = maxUser;
+}
+
+const std::set<UInt32>& OJT::ChatRoom::GetSessions() const
+{
+	return Sessions;
 }
 
 Int32 OJT::ChatRoom::GetCurrentUserCount() const

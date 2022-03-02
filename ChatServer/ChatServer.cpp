@@ -101,10 +101,10 @@ void OJT::ChatServer::Select()
 
 	FD_SET(ListenSocket, &read);
 
-	for (Session& session : Information.GetSessions())
+	for (auto& session : Information.GetSessions())
 	{
-		FD_SET(session.GetSocket(), &read);
-		if (session.HasSendBytes()) FD_SET(session.GetSocket(), &write);
+		FD_SET(session->GetSocket(), &read);
+		if (session->HasSendBytes()) FD_SET(session->GetSocket(), &write);
 	}
 
 	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
@@ -133,16 +133,16 @@ void OJT::ChatServer::Select()
 		}
 	}
 	//Recv
-	for (Session& session : Information.GetSessions())
+	for (auto& session : Information.GetSessions())
 	{
-		if (!FD_ISSET(session.GetSocket(), &read)) continue;
-		session.ProcessRecive();
+		if (!FD_ISSET(session->GetSocket(), &read)) continue;
+		session->ProcessRecive();
 	}
 	//Send
-	for (Session& session : Information.GetSessions())
+	for (auto& session : Information.GetSessions())
 	{
-		if (!FD_ISSET(session.GetSocket(), &write)) continue;
-		session.ProcessSend();
+		if (!FD_ISSET(session->GetSocket(), &write)) continue;
+		session->ProcessSend();
 	}
 }
 
