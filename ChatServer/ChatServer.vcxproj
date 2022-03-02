@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="ChatRoom.h" />
     <ClInclude Include="ChatServer.h" />
+    <ClInclude Include="Command\ICommand.h" />
     <ClInclude Include="Constant.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="ChatInformation.h" />
