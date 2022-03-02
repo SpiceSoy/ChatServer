@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -143,11 +143,15 @@
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="NetworkUtill.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="SessionState.h" />
+    <ClInclude Include="StateFunction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkUtill.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="StateFunction.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

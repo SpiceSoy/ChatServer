@@ -100,8 +100,8 @@ void OJT::ChatServer::Select()
 	FD_SET(ListenSocket, &read);
 	for (Session& session : Sessions)
 	{
-		if (session.RecvBytes > 0 || true) FD_SET(session.Socket, &read);
-		if (session.SendBytes > 0) FD_SET(session.Socket, &write);
+		FD_SET(session.GetSocket(), &read);
+		if (session.HasSendBytes()) FD_SET(session.GetSocket(), &write);
 	}
 
 	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
@@ -123,37 +123,20 @@ void OJT::ChatServer::Select()
 			std::cout << "Connection : IP Address = " << addrString << "\n";
 			std::cout << addrString << "\n";
 			Session& clientSession = AddClientSocket(clientSocket);
-			//SendOption(clientSession);
-			SendText(clientSession, "** 안녕하세요. 텍스트 채팅서버 ver 0.1 입니다. \r\n");
-			SendText(clientSession, "** 로그인 명령어(LOGIN)를 사용해주세요.\r\n");
+			clientSession.SetState(SessionState::WAIT_LOGIN);
 		}
 	}
 	//Recv
 	for (Session& session : Sessions)
 	{
-		if (!FD_ISSET(session.Socket, &read)) continue;
-		ret = recv(session.Socket, ((char*)session.ReadBuffer.data()) + session.RecvBytes, sizeof(Char), 0);
-		Char* expectEnd = reinterpret_cast<Char*>(session.ReadBuffer.data() + session.RecvBytes);
-		if (expectEnd[0] == '\n')
-		{
-			expectEnd[1] = 0;
-			std::cout << "echo : " << (const Char*)session.ReadBuffer.data();
-			session.RecvBytes = 0;
-		}
-		else
-		{
-			session.RecvBytes += ret;
-		}
+		if (!FD_ISSET(session.GetSocket(), &read)) continue;
+		session.ProcessRecive();
 	}
 	//Send
 	for (Session& session : Sessions)
 	{
-		if (!FD_ISSET(session.Socket, &write)) continue;
-
-		Int64 currentSize = session.SendStartCsr + session.SendBytes > session.SendBuffer.size() ? session.SendBuffer.size() - session.SendStartCsr : session.SendBytes;
-		ret = send(session.Socket, (const char*)session.SendBuffer.data() + session.SendStartCsr, currentSize, 0);
-		session.SendStartCsr = (session.SendStartCsr + currentSize) % session.SendBuffer.size();
-		session.SendBytes -= currentSize;
+		if (!FD_ISSET(session.GetSocket(), &write)) continue;
+		session.ProcessSend();
 	}
 }
 
@@ -161,46 +144,6 @@ OJT::Session& OJT::ChatServer::AddClientSocket(SocketHandle socket)
 {
 	Sessions.emplace_back(socket);
 	return Sessions.back();
-}
-
-void OJT::ChatServer::SendOption(Session& session)
-{
-	Byte options[3] = { 255, 252, 34 };
-	SendByte(session, options, 3);
-}
-
-void OJT::ChatServer::SendText(Session& session, const Char* message)
-{
-	SendByte(session, (Byte*)message, strlen(message) * sizeof(Char));
-}
-
-void OJT::ChatServer::SendByte(Session& session, Byte* data, UInt64 size)
-{
-	if (session.SendBytes == 0)
-	{
-		session.SendStartCsr = 0;
-		session.SendBufferCsr = 0;
-	}
-	Int64 csrMessage = 0;
-	Int64 remainSize = size;
-	session.SendBytes += remainSize;
-	while (remainSize != 0)
-	{
-		Int64 currentSendSize = 0;
-		if (session.SendBufferCsr + session.SendBytes > session.SendBuffer.size()) // 버퍼 넘치면
-		{
-			currentSendSize = session.SendBufferCsr + session.SendBytes - session.SendBuffer.size();
-		}
-		else
-		{
-			currentSendSize = remainSize;
-		}
-
-		memcpy_s(session.SendBuffer.data() + session.SendBufferCsr, currentSendSize, data + csrMessage, currentSendSize);
-		session.SendBufferCsr = (session.SendBufferCsr + currentSendSize) % session.SendBuffer.size();
-		csrMessage += currentSendSize;
-		remainSize -= currentSendSize;
-	}
 }
 
 void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking)

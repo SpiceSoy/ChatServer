@@ -34,9 +34,6 @@ namespace OJT
 		void StartListen();
 		void Select();
 		Session& AddClientSocket(SocketHandle socket);
-		void SendOption(Session& session);
-		void SendText(Session& session, const Char* message);
-		void SendByte(Session& session, Byte* data, UInt64 size);
 
 		static void ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking);
 	};
