@@ -42,7 +42,7 @@ void OJT::ChatServer::InitializeSocket()
 	WORD version = MAKEWORD(2, 2);
 	WSADATA wsaData;
 	ZeroMemory(&wsaData, sizeof(wsaData));
-	Int32 initResult = WSAStartup(version, &wsaData);
+	ResultCode initResult = WSAStartup(version, &wsaData);
 	if (initResult != 0)
 	{
 		PrintLastErrorMessageInFile("Init");
@@ -69,7 +69,7 @@ void OJT::ChatServer::BindListenSocket()
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
 	serverAddress.sin_port = htons(ListenPort);
-	int bindResult = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
+	ResultCode bindResult = bind(ListenSocket, (SOCKADDR*)&serverAddress, sizeof(serverAddress));
 	if (bindResult == SOCKET_ERROR)
 	{
 		PrintLastErrorMessageInFile("Bind");
@@ -80,7 +80,7 @@ void OJT::ChatServer::BindListenSocket()
 void OJT::ChatServer::StartListen()
 {
 	std::cout << "Start Listen\n";
-	int listenResult = listen(ListenSocket, SOMAXCONN);
+	ResultCode listenResult = listen(ListenSocket, SOMAXCONN);
 	if (listenResult == SOCKET_ERROR)
 	{
 		PrintLastErrorMessageInFile("StartListen");
@@ -106,8 +106,8 @@ void OJT::ChatServer::Select()
 		if (session->HasSendBytes()) FD_SET(session->GetSocket(), &write);
 	}
 
-	int ret = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
-	if (ret == SOCKET_ERROR) PrintLastErrorMessageInFile("Select");
+	ResultCode selectResult = select(NULL, &read, &write, NULL, NULL); // time == NULL : 무한히 기다림
+	if (selectResult == SOCKET_ERROR) PrintLastErrorMessageInFile("Select");
 
 	//Accept
 	if (FD_ISSET(ListenSocket, &read))
@@ -149,8 +149,8 @@ void OJT::ChatServer::Select()
 void OJT::ChatServer::ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking)
 {
 	u_long on = isNoneBlocking;
-	int ret = ioctlsocket(socket, FIONBIO, &on);
-	if (ret == SOCKET_ERROR) PrintLastErrorMessageInFile("ioctlsocket");
+	ResultCode optionResult = ioctlsocket(socket, FIONBIO, &on);
+	if (optionResult == SOCKET_ERROR) PrintLastErrorMessageInFile("ioctlsocket");
 }
 
 Int32 OJT::ChatServer::Process()
