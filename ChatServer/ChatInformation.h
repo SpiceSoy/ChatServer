@@ -31,7 +31,8 @@ namespace OJT
 		void SetMaxSessions(UInt32 maxSessions);
 		const std::vector<std::unique_ptr<Session>>& GetSessions();
 		Session& AddClientSocket(SocketHandle socket);
-		const ChatRoom& GetChatRoom(Int32 index) const;
+		Bool HasChatRoom(Int32 index) const;
+		ChatRoom& GetChatRoom(Int32 index) const;
 		void SetId(Session& session, const std::string& id);
 		Bool HasId(const std::string& id) const;
 		const std::map<std::string, Session*>& GetIdMap() const;

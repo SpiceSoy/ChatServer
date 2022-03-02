@@ -28,7 +28,12 @@ OJT::Session& OJT::ChatInformation::AddClientSocket(SocketHandle socket)
 	return result;
 }
 
-const OJT::ChatRoom& OJT::ChatInformation::GetChatRoom(Int32 index) const
+Bool OJT::ChatInformation::HasChatRoom(Int32 index) const
+{
+	return index >= 0  && index < ChatRooms.size();
+}
+
+OJT::ChatRoom& OJT::ChatInformation::GetChatRoom(Int32 index) const
 {
 	return *ChatRooms.at(index);
 }
@@ -50,7 +55,7 @@ const std::map<std::string, OJT::Session*>& OJT::ChatInformation::GetIdMap() con
 
 OJT::ChatRoom& OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)
 {
-	ChatRooms.emplace_back();
+	ChatRooms.emplace_back(std::make_unique<ChatRoom>(this));
 	auto& last = *ChatRooms.back();
 	last.SetMaxUser(maxUser);
 	last.SetTitle(title);

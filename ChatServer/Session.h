@@ -49,6 +49,7 @@ namespace OJT
 		const std::string& GetId() const;
 		const std::string& GetAddress() const;
 		UInt16 GetPort() const;
+		ChatRoom* GetChatRoom() const;
 	public:
 		void SetState(SessionState state);
 		void ProcessSend();

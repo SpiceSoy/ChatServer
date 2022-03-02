@@ -229,7 +229,7 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 	break;
 	case COMMAND_SWITCH_O:
 	{
-		std::stringstream sstream;
+		std::stringstream sstream; // 커맨드 읽기 임시로 설정 , 이후 하나로 통일
 		sstream.str(argument);
 		Int32 maxUser = 0;
 		std::string title;
@@ -248,15 +248,41 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 			else 
 			{
 				ChatRoom& room = information.CreateChatRoom(maxUser, title);
-				session.SetChatRoom(&room);
-				session.SetState(SessionState::CHAT_ROOM);
 				session.SendText("대화방이 개설되었습니다.\r\n");
+				session.SetChatRoom(&room);
+				room.EnterUser(session);
+				session.SetState(SessionState::CHAT_ROOM);
 			}
 		}
 	}
 	break;
 	case COMMAND_SWITCH_J:
 	{
+		std::stringstream sstream; // 커맨드 읽기 임시로 설정 , 이후 하나로 통일
+		sstream.str(argument);
+		Int32 index = 0;
+		std::string title;
+		sstream >> index;
+		index -= 1; // 1번부터 시작 보정
+		if (sstream.bad())
+		{
+			session.SendText("명령어 인자가 이상합니다.\r\n");
+			session.SendText("명령어 안내(H) 종료(X)\r\n");
+		}
+		else
+		{
+			if (information.HasChatRoom(index))
+			{
+				ChatRoom& room = information.GetChatRoom(index);
+				session.SetChatRoom(&room);
+				room.EnterUser(session);
+				session.SetState(SessionState::CHAT_ROOM);
+			}
+			else
+			{
+				session.SendText("해당하는 대화방이 없습니다.\r\n");
+			}
+		}
 	}
 	break;
 	case COMMAND_SWITCH_X:
@@ -271,9 +297,29 @@ void OJT::StateFunction::OnMainMenuStateReciveLine(Session& session, ChatInforma
 
 void OJT::StateFunction::OnChatRoomStateEnter(Session& session, ChatInformation& information)
 {
+	ChatRoom* room = session.GetChatRoom();
+	if (room == nullptr)
+	{
+		session.SetState(SessionState::MAIN_MENU);
+		return;
+	}
+	room->BroadCastText(session.GetId().c_str());
+	std::stringstream sstream;
+	sstream << "** " << session.GetId() << "님이 들어오셨습니다. (현재인원 " << room->GetCurrentUserCount() << "/" << room->GetMaxUser() << ")\r\n";
+	room->BroadCastText(sstream.str().c_str());
 }
 
 void OJT::StateFunction::OnChatRoomStateReciveLine(Session& session, ChatInformation& information, const Char* input)
 {
+	ChatRoom* room = session.GetChatRoom();
+	if (room == nullptr)
+	{
+		session.SetState(SessionState::MAIN_MENU);
+		return;
+	}
+
+	std::stringstream sstream;
+	sstream << session.GetId() << "> " << input  << "\r\n";
+	room->BroadCastText(sstream.str().c_str());
 }
 

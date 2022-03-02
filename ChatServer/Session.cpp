@@ -82,6 +82,11 @@ UInt16 OJT::Session::GetPort() const
 	return Port;
 }
 
+OJT::ChatRoom* OJT::Session::GetChatRoom() const
+{
+	return Room;
+}
+
 void OJT::Session::SetId(const Char* name)
 {
 	Id = name;

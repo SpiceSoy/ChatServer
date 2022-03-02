@@ -17,11 +17,12 @@
 namespace OJT
 {
 	class ChatInformation;
+	class Session;
 	class ChatRoom
 	{
 	private:
 		Int32 MaxUser;
-		std::set<UInt32> Sessions;
+		std::set<Session*> Sessions;
 		std::string Title;
 		ChatInformation* const Information = nullptr;
 	public:
@@ -34,10 +35,11 @@ namespace OJT
 		Int32 GetMaxUser() const;
 		void SetMaxUser(Int32 maxUser);
 
-		const std::set<UInt32>& GetSessions() const;
+		const std::set<Session*>& GetSessions() const;
 		Int32 GetCurrentUserCount() const;
 	public:
-		void EnterUser(UInt32 sessionIndex);
-		void ExitUser(UInt32 sessionIndex);
+		void EnterUser(Session& session);
+		void ExitUser(Session& session);
+		void BroadCastText(const Char* text);
 	};
 }

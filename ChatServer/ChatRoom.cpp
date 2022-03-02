@@ -40,7 +40,7 @@ void OJT::ChatRoom::SetMaxUser(Int32 maxUser)
 	MaxUser = maxUser;
 }
 
-const std::set<UInt32>& OJT::ChatRoom::GetSessions() const
+const std::set<OJT::Session*>& OJT::ChatRoom::GetSessions() const
 {
 	return Sessions;
 }
@@ -50,12 +50,21 @@ Int32 OJT::ChatRoom::GetCurrentUserCount() const
 	return Sessions.size();
 }
 
-void OJT::ChatRoom::EnterUser(UInt32 sessionIndex)
+void OJT::ChatRoom::EnterUser(Session& session)
 {
-	Sessions.emplace(sessionIndex);
+	Sessions.emplace(&session);
 }
 
-void OJT::ChatRoom::ExitUser(UInt32 sessionIndex)
+void OJT::ChatRoom::ExitUser(Session& session)
 {
-	Sessions.erase(sessionIndex);
+	Sessions.erase(&session);
 }
+
+void OJT::ChatRoom::BroadCastText(const Char* text)
+{
+	for (Session* session : Sessions)
+	{
+		session->SendText(text);
+	}
+}
+
