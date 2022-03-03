@@ -9,14 +9,14 @@
 //=================================================================================================
 
 
-#include "../Command/CommandPlsLogin.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatInformation.h"
+#include "Command/CommandPlsLogin.h"
+#include "Constant.h"
+#include "ChatInformation.h"
+#include "Session.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandPlsLogin::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandPlsLogin::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	session.SendText(CONSTANT::TEXT::PLS_LOGIN);
+	session.SendText( CONSTANT::TEXT::PLS_LOGIN );
 }

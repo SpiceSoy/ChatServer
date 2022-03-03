@@ -9,37 +9,37 @@
 //=================================================================================================
 
 
-#include "../Command/CommandMakeRoom.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatInformation.h"
+#include "Command/CommandMakeRoom.h"
+#include "Constant.h"
+#include "Session.h"
+#include "ChatInformation.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandMakeRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandMakeRoom::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
 	std::stringstream sstream;
-	sstream.str(argument);
+	sstream.str( argument );
 	Int32 maxUser = 0;
 	std::string title;
 	sstream >> maxUser >> title;
-	if (sstream.bad())
+	if ( sstream.bad() )
 	{
-		session.SendText(CONSTANT::TEXT::ALERT_ARGUMENT_WRONG);
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
+		session.SendText( CONSTANT::TEXT::ALERT_ARGUMENT_WRONG );
+		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 	}
 	else
 	{
-		if (CONSTANT::VALUE::ROOM_MIN_USER <= maxUser && maxUser <= CONSTANT::VALUE::ROOM_MAX_USER)
+		if ( CONSTANT::VALUE::ROOM_MIN_USER <= maxUser && maxUser <= CONSTANT::VALUE::ROOM_MAX_USER )
 		{
 			ChatRoom* currentChatRoom = session.GetChatRoom();
-			if (currentChatRoom != nullptr) currentChatRoom->ExitUser(session);
+			if ( currentChatRoom != nullptr ) currentChatRoom->ExitUser( session );
 
-			ChatRoom& room = information.CreateChatRoom(maxUser, title);
-			session.SendText(CONSTANT::TEXT::ROOM_CREATED);
-			session.SetChatRoom(&room);
-			room.EnterUser(session);
-			session.SetState(SessionState::CHAT_ROOM);
+			ChatRoom& room = information.CreateChatRoom( maxUser, title );
+			session.SendText( CONSTANT::TEXT::ROOM_CREATED );
+			session.SetChatRoom( &room );
+			room.EnterUser( session );
+			session.SetState( ESessionState::ChatRoom );
 		}
 		else
 		{

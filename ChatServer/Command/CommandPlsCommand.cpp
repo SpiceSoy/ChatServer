@@ -9,12 +9,12 @@
 //=================================================================================================
 
 
-#include "../Command/CommandPlsCommand.h"
-#include "../Constant.h"
-#include "../Session.h"
+#include "Command/CommandPlsCommand.h"
+#include "Constant.h"
+#include "Session.h"
 
-void OJT::ChatCommand::CommandPlsCommand::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandPlsCommand::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	session.SendText(OJT::CONSTANT::TEXT::ALERT_PLS_COMMAND);
-	session.SendFormattedText(OJT::CONSTANT::FORMAT::HELP_OR_EXIT, OJT::CONSTANT::COMMAND::MENU_HELP, OJT::CONSTANT::COMMAND::MENU_EXIT);
+	session.SendText( OJT::CONSTANT::TEXT::ALERT_PLS_COMMAND );
+	session.SendFormattedText( OJT::CONSTANT::FORMAT::HELP_OR_EXIT, OJT::CONSTANT::COMMAND::MENU_HELP, OJT::CONSTANT::COMMAND::MENU_EXIT );
 }

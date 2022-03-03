@@ -11,12 +11,12 @@
 #pragma once
 namespace OJT
 {
-	enum class SessionState
+	enum class ESessionState
 	{
-		MAIN_MENU,
-		WAIT_LOGIN,
-		CHAT_ROOM,
-		CLOSE,
-		EMPTY
+		MainMenu,
+		WaitLogin,
+		ChatRoom,
+		Closed,
+		Empty
 	};
 }

@@ -9,17 +9,17 @@
 //=================================================================================================
 
 
-#include "../Command/CommandQuitRoom.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatInformation.h"
-#include "../ChatRoom.h"
+#include "Command/CommandQuitRoom.h"
+#include "Constant.h"
+#include "ChatInformation.h"
+#include "ChatRoom.h"
+#include "Session.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandQuitRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandQuitRoom::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	session.GetChatRoom()->ExitUser(session);
-	session.SetChatRoom(nullptr);
-	session.SetState(SessionState::MAIN_MENU);
+	session.GetChatRoom()->ExitUser( session );
+	session.SetChatRoom( nullptr );
+	session.SetState( ESessionState::MainMenu );
 }

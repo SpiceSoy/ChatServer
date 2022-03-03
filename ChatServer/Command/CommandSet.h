@@ -10,9 +10,9 @@
 
 
 #pragma once
-#include "../DataTypes.h"
-#include "../Command/ECommand.h"
-#include "../Command/CommandElement.h"
+#include "Command/ECommand.h"
+#include "Command/CommandElement.h"
+#include "DataTypes.h"
 #include <vector>
 
 namespace OJT
@@ -21,21 +21,21 @@ namespace OJT
 	{
 		struct CommandSet
 		{
-			std::vector<CommandElement> Elements;
+			std::vector< CommandElement > Elements;
 			ECommand OnNoCommand;
 			ECommand OnWrongArgument;
 
-			CommandSet(ECommand onNoCommand, ECommand onWrongArgument, std::vector<CommandElement>&& elements)
-				:OnNoCommand(onNoCommand), OnWrongArgument(onWrongArgument), Elements(std::move(elements))
+			CommandSet ( ECommand onNoCommand, ECommand onWrongArgument, std::vector< CommandElement >&& elements )
+				:OnNoCommand ( onNoCommand ), OnWrongArgument ( onWrongArgument ), Elements ( std::move ( elements ) )
 			{
 			}
-			CommandSet(ECommand onNoCommand, ECommand onWrongArgument, const std::vector<CommandElement>& elements)
-				:OnNoCommand(onNoCommand), OnWrongArgument(onWrongArgument), Elements(elements)
+			CommandSet ( ECommand onNoCommand, ECommand onWrongArgument, const std::vector< CommandElement >& elements )
+				:OnNoCommand ( onNoCommand ), OnWrongArgument ( onWrongArgument ), Elements ( elements )
 			{
 			}
 
-			CommandSet(ECommand onNoCommand, ECommand onWrongArgument, std::initializer_list<CommandElement>&& elements)
-				:OnNoCommand(onNoCommand), OnWrongArgument(onWrongArgument), Elements(elements)
+			CommandSet ( ECommand onNoCommand, ECommand onWrongArgument, std::initializer_list< CommandElement >&& elements )
+				:OnNoCommand ( onNoCommand ), OnWrongArgument ( onWrongArgument ), Elements ( elements )
 			{
 			}
 		};

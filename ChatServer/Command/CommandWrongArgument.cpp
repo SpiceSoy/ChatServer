@@ -9,11 +9,11 @@
 //=================================================================================================
 
 
-#include "../Command/CommandWrongArgument.h"
-#include "../Constant.h"
-#include "../Session.h"
+#include "Command/CommandWrongArgument.h"
+#include "Constant.h"
+#include "Session.h"
 
-void OJT::ChatCommand::CommandWrongArgument::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandWrongArgument::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	session.SendText(CONSTANT::TEXT::ALERT_ARGUMENT_WRONG);
+	session.SendText( CONSTANT::TEXT::ALERT_ARGUMENT_WRONG );
 }

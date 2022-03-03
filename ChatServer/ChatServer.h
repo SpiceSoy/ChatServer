@@ -24,22 +24,20 @@ namespace OJT
 		ChatServer();
 		~ChatServer();
 
-		void Initialize(UInt16 port);
+		void Initialize( UInt16 port );
 		Int32 Process();
 	private:
 		UInt16 ListenPort = 0;
 		SocketHandle ListenSocket = 0;
 		static constexpr UInt32 MAX_SESSION_SIZE = 64;
 		ChatInformation Information;
+
 		void InitializeSocket();
 		void CreateListenSocket();
 		void BindListenSocket();
 		void StartListen();
 		void Select();
 
-		static void ChangeNoneBlockingOption(SocketHandle socket, Bool isNoneBlocking);
-
-	public:
-		Session& FindID();
+		static void ChangeNoneBlockingOption( SocketHandle socket, Bool isNoneBlocking );
 	};
 }

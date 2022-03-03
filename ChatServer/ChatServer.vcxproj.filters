@@ -117,19 +117,19 @@
     <ClInclude Include="Command\CommandElement.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="State\ChatRoomState.h">
+    <ClInclude Include="State\StateChatRoom.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
-    <ClInclude Include="State\LoginState.h">
+    <ClInclude Include="State\StateLogin.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
-    <ClInclude Include="State\MenuState.h">
+    <ClInclude Include="State\StateMenu.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
     <ClInclude Include="SessionState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="State\EmptyState.h">
+    <ClInclude Include="State\StateEmpty.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
   </ItemGroup>
@@ -209,16 +209,16 @@
     <ClCompile Include="State\BaseState.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="State\ChatRoomState.cpp">
+    <ClCompile Include="State\StateChatRoom.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="State\LoginState.cpp">
+    <ClCompile Include="State\StateLogin.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="State\MenuState.cpp">
+    <ClCompile Include="State\StateMenu.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
-    <ClCompile Include="State\EmptyState.cpp">
+    <ClCompile Include="State\StateEmpty.cpp">
       <Filter>Source Files\State</Filter>
     </ClCompile>
   </ItemGroup>

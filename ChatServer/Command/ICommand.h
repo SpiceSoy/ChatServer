@@ -10,7 +10,7 @@
 
 
 #pragma once
-#include "../DataTypes.h"
+#include "DataTypes.h"
 namespace OJT
 {
 	class Session;
@@ -22,7 +22,7 @@ namespace OJT
 		public:
 			ICommand() = default;
 			virtual ~ICommand() = default;
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const= 0;
+			virtual void Execute( const Char* argument, Session& session, ChatInformation& information ) const = 0;
 		};
 	};
 };

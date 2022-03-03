@@ -1,7 +1,7 @@
 //=================================================================================================
 // @file ChatInformation.h
 //
-// @brief Singletone Class of Chat Info(Chat room, user list)
+// @brief class to manage Chat Info(Chat room, user list)
 // 
 // @date 2022/02/28
 //
@@ -12,10 +12,10 @@
 #pragma once
 #include "DataTypes.h"
 #include "Session.h"
+#include "State/BaseState.h"
+#include "SessionState.h"
 #include "ChatRoom.h"
 #include "Command/CommandProcessor.h"
-#include "SessionState.h"
-#include "State/BaseState.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -31,24 +31,29 @@ namespace OJT
 		ChatCommand::CommandProcessor CommandProcessor;
 	public:
 		ChatInformation();
-		ChatInformation(const ChatInformation&) = delete;
-		ChatInformation(ChatInformation&&) = delete;
+		ChatInformation( const ChatInformation& ) = delete;
+		ChatInformation( ChatInformation&& ) = delete;
 	public:
-		void SetMaxSessions(UInt32 maxSessions);
+		void SetMaxSessions( UInt32 maxSessions );
 		const std::list<std::unique_ptr<Session>>& GetSessions() const;
-		Session& AddClientSocket(SocketHandle socket);
-		Bool HasChatRoom(Int32 index) const;
-		ChatRoom& GetChatRoom(Int32 index) const;
-		Int32 GetChatRoomIndex(ChatRoom& room) const;
+
+		Bool HasChatRoom( Int32 index ) const;
+		ChatRoom& GetChatRoom( Int32 index ) const;
+		Int32 GetChatRoomIndex( ChatRoom& room ) const;
 		const std::vector<std::unique_ptr<ChatRoom>>& GetChatRooms() const;
-		void SetId(Session& session, const std::string& id);
-		Bool HasId(const std::string& id) const;
-		Session& FindSession(const std::string& id) const;
+
+		void SetId( Session& session, const std::string& id );
+		Bool HasId( const std::string& id ) const;
+
 		const std::map<std::string, Session*>& GetIdMap() const;
-		void EraseClosedSessions();
+		State::BaseState* GetState( ESessionState state ) const;
+
+		Session& FindSession( const std::string& id ) const;
+
 		void EraseEmptyChatRooms();
-		State::BaseState* GetState(SessionState state) const;
+		void EraseClosedSessions();
 	public:
-		ChatRoom& CreateChatRoom(Int32 maxUser, const std::string& title);
+		Session& AddClientSocket( SocketHandle socket );
+		ChatRoom& CreateChatRoom( Int32 maxUser, const std::string& title );
 	};
 };

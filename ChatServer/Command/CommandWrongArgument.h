@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandHelpInMenu.h
+// @file CommandWrongArgument.h
 //
-// @brief dummy command class of wrong argument
+// @brief command class to alert wrong argument input
 // 
 // @date 2022/03/02
 //
@@ -10,15 +10,15 @@
 
 
 #pragma once
-#include "../Command/ICommand.h"
+#include "Command/ICommand.h"
 namespace OJT
 {
 	namespace ChatCommand
 	{
-		class CommandWrongArgument: public ICommand
+		class CommandWrongArgument : public ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
+			virtual void Execute( const Char* argument, Session& session, ChatInformation& information ) const override;
 		};
 	};
 };

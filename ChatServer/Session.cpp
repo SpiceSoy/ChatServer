@@ -17,6 +17,12 @@
 #include <iostream>
 #include <array>
 
+OJT::Session::Session( SocketHandle socket, ChatInformation* information )
+	: Socket( socket ), Information( information ), Port( 0 )
+{
+	ReadBuffer.resize( 1024 );
+	SendBuffer.resize( 1024 );
+};
 SocketHandle OJT::Session::GetSocket() const
 {
 	return Socket;
@@ -27,74 +33,76 @@ Bool OJT::Session::HasSendBytes() const
 	return SendBytes;
 }
 
-void OJT::Session::SetState(SessionState state)
+void OJT::Session::SetState( ESessionState state )
 {
-	State = Information->GetState(state);
-	if (State != nullptr) State->OnEnter(*this, *Information);
+	State = Information->GetState( state );
+	if ( State != nullptr ) State->OnEnter( *this, *Information );
 }
 
 void OJT::Session::ProcessSend()
 {
-	Int32 sentBytes = send(Socket, (const char*)SendBuffer.data(), SendBytes, 0);
-	if (sentBytes == SOCKET_ERROR)
+	Int32 sentBytes = send( Socket, (const char*)SendBuffer.data(), SendBytes, 0 );
+	if ( sentBytes == SOCKET_ERROR )
 	{
-		NetworkUtill::PrintLastErrorMessage("send", __FILE__, __LINE__);
+		NetworkUtill::PrintLastErrorMessage( "send", __FILE__, __LINE__ );
 		Close();
 	}
-	else 
+	else
 	{
-		memcpy_s(SendBuffer.data(), SendBytes - sentBytes, SendBuffer.data() + sentBytes, SendBytes - sentBytes); //메모리 땡기기
+		//메모리 땡기기
+		memcpy_s( SendBuffer.data(), SendBytes - sentBytes, SendBuffer.data() + sentBytes, SendBytes - sentBytes );
 		SendBytes -= sentBytes;
 	}
 }
 
 void OJT::Session::ProcessRecive()
 {
-	Int32 recivedBytes = recv(Socket, ((char*)ReadBuffer.data()) + RecvBytes, sizeof(Char), 0); // 이름 겹쳐서 로컬변수 전문 작성
-	Char* expectEnd = reinterpret_cast<Char*>(ReadBuffer.data() + RecvBytes);
-	if (recivedBytes == 0 || recivedBytes == SOCKET_ERROR)
+	// 이름 겹쳐서 로컬변수 전문 작성
+	Int32 recivedBytes = recv( Socket, ( (char*)ReadBuffer.data() ) + RecvBytes, sizeof( Char ), 0 );
+	Char* expectEnd = reinterpret_cast<Char*>( ReadBuffer.data() + RecvBytes );
+	if ( recivedBytes == 0 || recivedBytes == SOCKET_ERROR )
 	{
 		Close();
 	}
-	else 
+	else
 	{
-		if (expectEnd[0] == '\n')
+		if ( expectEnd[ 0 ] == '\n' )
 		{
-			expectEnd[0] = '\0';
-			if (expectEnd != reinterpret_cast<Char*>(ReadBuffer.data())) *(expectEnd - 1) = '\0';
-			OnReciveLine(reinterpret_cast<const Char*>(ReadBuffer.data()));
+			expectEnd[ 0 ] = '\0';
+			if ( expectEnd != reinterpret_cast<Char*>( ReadBuffer.data() ) ) *( expectEnd - 1 ) = '\0';
+			OnReciveLine( reinterpret_cast<const Char*>( ReadBuffer.data() ) );
 			RecvBytes = 0;
 		}
 		else
 		{
 			RecvBytes += recivedBytes;
 			bool expectedOver = ReadBuffer.size() < RecvBytes * 1.5;
-			if (expectedOver) ReadBuffer.resize(ReadBuffer.size() * 2);
+			if ( expectedOver ) ReadBuffer.resize( ReadBuffer.size() * 2 );
 		}
 	}
 }
 
-void OJT::Session::SendText(const Char* message)
+void OJT::Session::SendText( const Char* message )
 {
-	SendByte(reinterpret_cast<const Byte*>(message), strlen(message) * sizeof(Char));
+	SendByte( reinterpret_cast<const Byte*>( message ), strlen( message ) * sizeof( Char ) );
 }
 
-void OJT::Session::SendFormattedText(const Char* fmt, ...)
+void OJT::Session::SendFormattedText( const Char* fmt, ... )
 {
 	std::array<Char, 2048> buffer;
 	va_list va;
-	va_start(va, fmt);
-	vsprintf_s(buffer.data(), 2048, fmt, va);
-	SendText(buffer.data());
-	va_end(va);
+	va_start( va, fmt );
+	vsprintf_s( buffer.data(), 2048, fmt, va );
+	SendText( buffer.data() );
+	va_end( va );
 }
 
 void OJT::Session::Close()
 {
-	if (Socket == 0) return;
-	closesocket(this->Socket);
-	if(Room != nullptr) Room->ExitUser(*this);
-	SetState(SessionState::CLOSE);
+	if ( Socket == 0 ) return;
+	closesocket( this->Socket );
+	if ( Room != nullptr ) Room->ExitUser( *this );
+	SetState( ESessionState::Closed );
 }
 
 const std::string& OJT::Session::GetId() const
@@ -119,42 +127,42 @@ OJT::ChatRoom* OJT::Session::GetChatRoom() const
 
 Bool OJT::Session::IsClosed() const
 {
-	return State == Information->GetState(SessionState::CLOSE);
+	return State == Information->GetState( ESessionState::Closed );
 }
 
-void OJT::Session::SetId(const Char* name)
+void OJT::Session::SetId( const Char* name )
 {
 	Id = name;
 }
 
-void OJT::Session::SetChatRoom(ChatRoom* room)
+void OJT::Session::SetChatRoom( ChatRoom* room )
 {
 	Room = room;
 }
 
-void OJT::Session::SetAddress(const Char* address, UInt16 port)
+void OJT::Session::SetAddress( const Char* address, UInt16 port )
 {
 	AddressText = address;
 	Port = port;
-} 
+}
 
-void OJT::Session::SendByte(const Byte* data, UInt64 size)
+void OJT::Session::SendByte( const Byte* data, UInt64 size )
 {
-	if (IsClosed()) return;
+	if ( IsClosed() ) return;
 	bool willOver = SendBytes + size > SendBuffer.size();
-	if (willOver) SendBuffer.resize(SendBuffer.size() * 2);
-	memcpy_s(SendBuffer.data() + SendBytes, size, data, size);
+	if ( willOver ) SendBuffer.resize( SendBuffer.size() * 2 );
+	memcpy_s( SendBuffer.data() + SendBytes, size, data, size );
 	SendBytes += size;
 }
 
-void OJT::Session::LogInput(const Char* input) const
+void OJT::Session::LogInput( const Char* input ) const
 {
-	printf_s(OJT::CONSTANT::FORMAT::SERVER_SIDE_USER_LOG, AddressText.c_str(), Port, Id.c_str(), input);
+	printf_s( OJT::CONSTANT::FORMAT::SERVER_SIDE_USER_LOG, AddressText.c_str(), Port, Id.c_str(), input );
 }
 
 
-void OJT::Session::OnReciveLine(const Char* input)
+void OJT::Session::OnReciveLine( const Char* input )
 {
-	LogInput(input);
-	if(State != nullptr) State->OnLineRecived(*this, *Information, input);
+	LogInput( input );
+	if ( State != nullptr ) State->OnLineRecived( *this, *Information, input );
 }

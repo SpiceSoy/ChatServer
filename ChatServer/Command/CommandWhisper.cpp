@@ -9,32 +9,32 @@
 //=================================================================================================
 
 
-#include "../Command/CommandWhisper.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatInformation.h"
+#include "Command/CommandWhisper.h"
+#include "Constant.h"
+#include "ChatInformation.h"
+#include "Session.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandWhisper::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandWhisper::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
 	std::stringstream sstream;
-	sstream.str(argument);
+	sstream.str( argument );
 	std::string id;
 	std::string text;
 	sstream >> id >> text;
-	if (sstream.bad())
+	if ( sstream.bad() )
 	{
-		session.SendText(CONSTANT::TEXT::ALERT_ARGUMENT_WRONG);
+		session.SendText( CONSTANT::TEXT::ALERT_ARGUMENT_WRONG );
 	}
-	else if (information.HasId(id))
+	else if ( information.HasId( id ) )
 	{
 		sstream.clear();
-		Session& targetSession = information.FindSession(id);
-		targetSession.SendFormattedText(CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text.c_str());
+		Session& targetSession = information.FindSession( id );
+		targetSession.SendFormattedText( CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text.c_str() );
 	}
 	else
 	{
-		session.SendText(CONSTANT::TEXT::ALERT_NO_ID_USER);
+		session.SendText( CONSTANT::TEXT::ALERT_NO_ID_USER );
 	}
 }

@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file IState.h
+// @file BaseState.h
 //
-// @brief dummy command class of wrong argument
+// @brief state class for child states
 // 
 // @date 2022/03/03
 //
@@ -10,10 +10,10 @@
 
 
 #pragma once
-#include "../DataTypes.h"
-#include "../State/BaseState.h"
-#include "../Command/CommandSet.h"
-#include "../Command/CommandProcessor.h"
+#include "State/BaseState.h"
+#include "Command/CommandSet.h"
+#include "Command/CommandProcessor.h"
+#include "DataTypes.h"
 namespace OJT
 {
 	class Session;

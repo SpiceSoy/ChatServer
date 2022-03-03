@@ -19,7 +19,7 @@ namespace OJT
 		{
 			constexpr const Char* LINE = "---------------------------------------------------------------\r\n";
 			constexpr const Char* PLS_LOGIN = "** 로그인 명령어(LOGIN)를 사용해주세요.\r\n";
-			constexpr const Char* WRITER_INFO = 
+			constexpr const Char* WRITER_INFO =
 				"이용 중 불편하신 점이 있으면 아래 이메일로 문의 바랍니다.\r\n"
 				"감사합니다.\r\n\n"
 				"넷마블 네오 클라이언트 직무 김태형 (taehyeong.k@nm-neo.com)\r\n";
@@ -37,7 +37,7 @@ namespace OJT
 			constexpr const Char* TOOLTIP_QUIT_ROOM = "대화방 나가기";
 			constexpr const Char* TOOLTIP_EXIT = "끝내기";
 
-			constexpr const Char* TOOLTIP_ARG_ROOM_INFO= "[방번호]";
+			constexpr const Char* TOOLTIP_ARG_ROOM_INFO = "[방번호]";
 			constexpr const Char* TOOLTIP_ARG_USER_INFO = "[상대방ID]";
 			constexpr const Char* TOOLTIP_ARG_WHISPER = "[상대방ID] [메시지]";
 			constexpr const Char* TOOLTIP_ARG_INVITE_ROOM = "[상대방ID]";
@@ -63,9 +63,9 @@ namespace OJT
 			constexpr const Char* TOOLTIP = "%3s %-24s %s\r\n";
 			constexpr const Char* USER_LIST = "이용자: %-30s접속지: %s:%d\r\n";
 			constexpr const Char* ROOM_LIST = "[%3d] (%2d/%2d) %s\r\n";
-			constexpr const Char* ROOM_CREATE_TIME= "개설시간: %02d:%02d:%02d\r\n";
+			constexpr const Char* ROOM_CREATE_TIME = "개설시간: %02d:%02d:%02d\r\n";
 			constexpr const Char* ROOM_ENTRY_USERS = "  참여자: %-30s 참여시간: %02d:%02d:%02d\r\n";
-			constexpr const Char* USER_IN_ROOM= "%s님은 현재 %d번 방에 참여중입니다.\r\n";
+			constexpr const Char* USER_IN_ROOM = "%s님은 현재 %d번 방에 참여중입니다.\r\n";
 			constexpr const Char* USER_IN_MENU = "%s님은 현재 메인 메뉴에서 대기중입니다.\r\n";
 			constexpr const Char* WHISPER = "# %s님의 쪽지 ==> %s\r\n";
 			constexpr const Char* INVITE_ROOM = "# %s님이 %d번방으로 초대합니다.\r\n";
@@ -114,7 +114,7 @@ namespace OJT
 			constexpr const Char* LOGIN_ARGS[] = {
 				TEXT::TOOLTIP_ARG_LOGIN,
 			};
-			constexpr Int32 LOGIN_COMMAND_COUNT = sizeof(OJT::CONSTANT::VALUE::LOGIN_COMMANDS) / sizeof(OJT::CONSTANT::VALUE::LOGIN_COMMANDS[0]);
+			constexpr Int32 LOGIN_COMMAND_COUNT = sizeof( OJT::CONSTANT::VALUE::LOGIN_COMMANDS ) / sizeof( OJT::CONSTANT::VALUE::LOGIN_COMMANDS[ 0 ] );
 
 			constexpr const Char* MENU_COMMANDS[] = {
 				COMMAND::MENU_HELP,
@@ -149,7 +149,7 @@ namespace OJT
 				TEXT::TOOLTIP_ENTER_ROOM,
 				TEXT::TOOLTIP_EXIT,
 			};
-			constexpr Int32 MENU_COMMAND_COUNT = sizeof(OJT::CONSTANT::VALUE::MENU_COMMANDS) / sizeof(OJT::CONSTANT::VALUE::MENU_COMMANDS[0]);
+			constexpr Int32 MENU_COMMAND_COUNT = sizeof( OJT::CONSTANT::VALUE::MENU_COMMANDS ) / sizeof( OJT::CONSTANT::VALUE::MENU_COMMANDS[ 0 ] );
 			constexpr const Char* CHATROOM_COMMANDS[] = {
 				COMMAND::CHATROOM_HELP,
 				COMMAND::CHATROOM_USER_LIST,
@@ -186,10 +186,9 @@ namespace OJT
 				TEXT::TOOLTIP_QUIT_ROOM,
 				TEXT::TOOLTIP_EXIT,
 			};
-			constexpr Int32 CHATROOM_COMMAND_COUNT = sizeof(OJT::CONSTANT::VALUE::CHATROOM_COMMANDS) / sizeof(OJT::CONSTANT::VALUE::CHATROOM_COMMANDS[0]);
+			constexpr Int32 CHATROOM_COMMAND_COUNT = sizeof( OJT::CONSTANT::VALUE::CHATROOM_COMMANDS ) / sizeof( OJT::CONSTANT::VALUE::CHATROOM_COMMANDS[ 0 ] );
 
 		};
 	};
 };
 
-#pragma once

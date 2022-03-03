@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file ChatServer.h
+// @file ChatRoom.h
 //
-// @brief chat server main class
+// @brief class of manage ChatRoom instance
 // 
 // @date 2022/02/28
 //
@@ -25,28 +25,28 @@ namespace OJT
 	private:
 		Int32 MaxUser;
 		std::set<Session*> Sessions;
-		std::map<const Session*, std::chrono::system_clock::time_point> EntryTime; //sessions와 합칠까 고려하다가 세션 자체에만 접근이 필요할 것 같아 분리
+		std::map<const Session*, std::chrono::system_clock::time_point> EntryTime;
 		std::string Title;
 		ChatInformation* const Information = nullptr;
 		std::chrono::system_clock::time_point CreatedTime;
 	public:
-		ChatRoom(ChatInformation* information);
+		ChatRoom( ChatInformation* information );
 		~ChatRoom() = default;
 
 		const std::string& GetTitle() const;
-		void SetTitle(const std::string& title);
+		void SetTitle( const std::string& title );
 
 		Int32 GetMaxUser() const;
-		void SetMaxUser(Int32 maxUser);
+		void SetMaxUser( Int32 maxUser );
 
 		const std::set<Session*>& GetSessions() const;
-		std::chrono::system_clock::time_point GetEntryTime(const Session& session) const;
+		std::chrono::system_clock::time_point GetEntryTime( const Session& session ) const;
 		std::chrono::system_clock::time_point GetCreatedTime() const;
 		Int32 GetCurrentUserCount() const;
 	public:
-		void EnterUser(Session& session);
-		void ExitUser(Session& session);
-		void BroadCastText(const Char* text);
-		void BroadCastFormattedText(const Char* fmt, ...);
+		void EnterUser( Session& session );
+		void ExitUser( Session& session );
+		void BroadCastText( const Char* text );
+		void BroadCastFormattedText( const Char* fmt, ... );
 	};
 }

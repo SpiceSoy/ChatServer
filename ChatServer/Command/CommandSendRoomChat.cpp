@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandWrongArgument.cpp
+// @file CommandSendRoomChat.cpp
 //
-// @brief dummy command class of wrong argument
+// @brief command class to send chat to room
 // 
 // @date 2022/03/02
 //
@@ -9,13 +9,13 @@
 //=================================================================================================
 
 
-#include "../Command/CommandSendRoomChat.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatRoom.h"
+#include "Command/CommandSendRoomChat.h"
+#include "Constant.h"
+#include "ChatRoom.h"
+#include "Session.h"
 
-void OJT::ChatCommand::CommandSendRoomChat::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandSendRoomChat::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
 	ChatRoom* room = session.GetChatRoom();
-	room->BroadCastFormattedText(CONSTANT::FORMAT::CHAT, session.GetId().c_str(), argument);
+	room->BroadCastFormattedText( CONSTANT::FORMAT::CHAT, session.GetId().c_str(), argument );
 }

@@ -9,12 +9,12 @@
 //=================================================================================================
 
 
-#include "../Command/CommandExit.h"
-#include "../Constant.h"
-#include "../Session.h"
+#include "Command/CommandExit.h"
+#include "Constant.h"
+#include "Session.h"
 
-void OJT::ChatCommand::CommandExit::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandExit::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	session.SendText(CONSTANT::TEXT::GOODBYE_USER);
+	session.SendText( CONSTANT::TEXT::GOODBYE_USER );
 	session.Close();
 }

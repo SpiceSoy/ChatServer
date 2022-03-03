@@ -78,9 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -173,10 +175,10 @@
     <ClInclude Include="Session.h" />
     <ClInclude Include="SessionState.h" />
     <ClInclude Include="State\BaseState.h" />
-    <ClInclude Include="State\ChatRoomState.h" />
-    <ClInclude Include="State\EmptyState.h" />
-    <ClInclude Include="State\LoginState.h" />
-    <ClInclude Include="State\MenuState.h" />
+    <ClInclude Include="State\StateChatRoom.h" />
+    <ClInclude Include="State\StateEmpty.h" />
+    <ClInclude Include="State\StateLogin.h" />
+    <ClInclude Include="State\StateMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatRoom.cpp" />
@@ -204,10 +206,10 @@
     <ClCompile Include="NetworkUtill.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="State\BaseState.cpp" />
-    <ClCompile Include="State\ChatRoomState.cpp" />
-    <ClCompile Include="State\EmptyState.cpp" />
-    <ClCompile Include="State\LoginState.cpp" />
-    <ClCompile Include="State\MenuState.cpp" />
+    <ClCompile Include="State\StateChatRoom.cpp" />
+    <ClCompile Include="State\StateEmpty.cpp" />
+    <ClCompile Include="State\StateLogin.cpp" />
+    <ClCompile Include="State\StateMenu.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

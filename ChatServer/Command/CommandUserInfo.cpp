@@ -9,25 +9,25 @@
 //=================================================================================================
 
 
-#include "../Command/CommandUserInfo.h"
-#include "../Constant.h"
-#include "../Session.h"
-#include "../ChatInformation.h"
+#include "Command/CommandUserInfo.h"
+#include "Constant.h"
+#include "ChatInformation.h"
+#include "Session.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandUserInfo::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandUserInfo::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	if (information.HasId(argument))
+	if ( information.HasId( argument ) )
 	{
-		const Session& targetSession = information.FindSession(argument);
+		const Session& targetSession = information.FindSession( argument );
 		auto room = targetSession.GetChatRoom();
-		if (room != nullptr)
+		if ( room != nullptr )
 		{
 			session.SendFormattedText(
 				CONSTANT::FORMAT::USER_IN_ROOM,
 				targetSession.GetId().c_str(),
-				information.GetChatRoomIndex(*room) + 1
+				information.GetChatRoomIndex( *room ) + 1
 			);
 		}
 		else
@@ -37,11 +37,11 @@ void OJT::ChatCommand::CommandUserInfo::Execute(const Char* argument, Session& s
 				targetSession.GetId().c_str()
 			);
 		}
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
+		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 	}
 	else
 	{
-		session.SendText(CONSTANT::TEXT::ALERT_NO_ID_USER);
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
+		session.SendText( CONSTANT::TEXT::ALERT_NO_ID_USER );
+		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 	}
 }

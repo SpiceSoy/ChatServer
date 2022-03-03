@@ -10,7 +10,7 @@
 
 
 #pragma once
-#include "../Command/ICommand.h"
+#include "Command/ICommand.h"
 namespace OJT
 {
 	namespace ChatCommand

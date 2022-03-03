@@ -15,11 +15,11 @@
 
 constexpr Int32 DEFAULT_PORT = 4000;
 
-int main(int argc, char* argv[])
+int main( int argc, char* argv[] )
 {
-	Int32 port = argc == 1 ? DEFAULT_PORT : atoi(argv[1]);
+	Int32 port = argc == 1 ? DEFAULT_PORT : atoi( argv[ 1 ] );
 	OJT::ChatServer server;
-	server.Initialize(static_cast<UInt16>(port));
+	server.Initialize( static_cast<UInt16>( port ) );
 	server.Process();
 	return 0;
 }

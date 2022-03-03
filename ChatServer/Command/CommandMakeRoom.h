@@ -10,7 +10,7 @@
 
 
 #pragma once
-#include "../Command/ICommand.h"
+#include "Command/ICommand.h"
 namespace OJT
 {
 	namespace ChatCommand
@@ -18,7 +18,7 @@ namespace OJT
 		class CommandMakeRoom : public ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
+			virtual void Execute ( const Char* argument, Session& session, ChatInformation& information ) const override;
 		};
 	};
 };

@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandPlcCommand.h
+// @file CommandPlsCommand.h
 //
-// @brief dummy command class of no command in menu
+// @brief command class of no command in menu
 // 
 // @date 2022/03/02
 //
@@ -10,7 +10,7 @@
 
 
 #pragma once
-#include "../Command/ICommand.h"
+#include "Command/ICommand.h"
 namespace OJT
 {
 	namespace ChatCommand
@@ -18,7 +18,7 @@ namespace OJT
 		class CommandPlsCommand : public ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
+			virtual void Execute ( const Char* argument, Session& session, ChatInformation& information ) const override;
 		};
 	};
 };
