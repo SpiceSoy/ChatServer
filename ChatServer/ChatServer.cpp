@@ -144,6 +144,7 @@ void OJT::ChatServer::Select()
 		session->ProcessSend();
 	}
 	Information.EraseClosedSessions();
+	Information.EraseEmptyChatRooms();
 }
 
 void OJT::ChatServer::ChangeNoneBlockingOption( SocketHandle socket, Bool isNoneBlocking )
