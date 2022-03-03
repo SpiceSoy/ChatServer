@@ -10,7 +10,6 @@
 
 
 #include "Session.h"
-#include "StateFunction.h"
 #include "ChatInformation.h"
 #include "NetworkUtill.h"
 #include "Constant.h"
@@ -30,8 +29,8 @@ Bool OJT::Session::HasSendBytes() const
 
 void OJT::Session::SetState(SessionState state)
 {
-	State = state;
-	OnStateChenge(State);
+	State = Information->GetState(state);
+	if (State != nullptr) State->OnEnter(*this, *Information);
 }
 
 void OJT::Session::ProcessSend()
@@ -95,7 +94,7 @@ void OJT::Session::Close()
 	if (Socket == 0) return;
 	closesocket(this->Socket);
 	if(Room != nullptr) Room->ExitUser(*this);
-	State = SessionState::CLOSE;
+	SetState(SessionState::CLOSE);
 }
 
 const std::string& OJT::Session::GetId() const
@@ -120,7 +119,7 @@ OJT::ChatRoom* OJT::Session::GetChatRoom() const
 
 Bool OJT::Session::IsClosed() const
 {
-	return State == SessionState::CLOSE;
+	return State == Information->GetState(SessionState::CLOSE);
 }
 
 void OJT::Session::SetId(const Char* name)
@@ -153,23 +152,9 @@ void OJT::Session::LogInput(const Char* input) const
 	printf_s(OJT::CONSTANT::FORMAT::SERVER_SIDE_USER_LOG, AddressText.c_str(), Port, Id.c_str(), input);
 }
 
-void OJT::Session::OnStateChenge(SessionState newState)
-{
-	switch (newState)
-	{
-		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateEnter(*this, *Information); break;
-		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateEnter(*this, *Information); break;
-		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateEnter(*this, *Information); break;
-	}
-}
 
 void OJT::Session::OnReciveLine(const Char* input)
 {
 	LogInput(input);
-	switch (State)
-	{
-		case SessionState::WAIT_LOGIN: StateFunction::OnWaitLoginStateReciveLine(*this, *Information, input); break;
-		case SessionState::MAIN_MENU: StateFunction::OnMainMenuStateReciveLine(*this, *Information, input); break;
-		case SessionState::CHAT_ROOM: StateFunction::OnChatRoomStateReciveLine(*this, *Information, input); break;
-	}
+	if(State != nullptr) State->OnLineRecived(*this, *Information, input);
 }

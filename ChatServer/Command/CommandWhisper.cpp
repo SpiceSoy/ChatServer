@@ -32,7 +32,7 @@ void OJT::ChatCommand::CommandWhisper::Execute(const Char* argument, Session& se
 	{
 		sstream.clear();
 		Session& targetSession = information.FindSession(id);
-		targetSession.SendFormattedText(CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text);
+		targetSession.SendFormattedText(CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text.c_str());
 		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
 	}
 	else

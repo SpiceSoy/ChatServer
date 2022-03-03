@@ -54,7 +54,7 @@ void OJT::ChatCommand::CommandRoomInfo::Execute(const Char* argument, Session& s
 			std::time_t entryTime = std::chrono::system_clock::to_time_t(targetRoom->GetCreatedTime());
 			std::tm entryTm;
 			localtime_s(&entryTm, &entryTime);
-			session.SendFormattedText(CONSTANT::FORMAT::ROOM_ENTRY_USERS, member->GetId(), createTm.tm_hour, createTm.tm_min, createTm.tm_sec);
+			session.SendFormattedText(CONSTANT::FORMAT::ROOM_ENTRY_USERS, member->GetId().c_str(), createTm.tm_hour, createTm.tm_min, createTm.tm_sec);
 		}
 		session.SendText(sstream.str().c_str());
 		session.SendText(CONSTANT::TEXT::LINE);

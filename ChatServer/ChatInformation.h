@@ -13,6 +13,9 @@
 #include "DataTypes.h"
 #include "Session.h"
 #include "ChatRoom.h"
+#include "Command/CommandProcessor.h"
+#include "SessionState.h"
+#include "State/BaseState.h"
 #include <map>
 #include <vector>
 #include <list>
@@ -24,8 +27,10 @@ namespace OJT
 		std::list<std::unique_ptr<Session>> Sessions;
 		std::vector<std::unique_ptr<ChatRoom>> ChatRooms;
 		std::map<std::string, Session*> IdMap;
+		std::vector<std::unique_ptr<State::BaseState>> States;
+		ChatCommand::CommandProcessor CommandProcessor;
 	public:
-		ChatInformation() = default;
+		ChatInformation();
 		ChatInformation(const ChatInformation&) = delete;
 		ChatInformation(ChatInformation&&) = delete;
 	public:
@@ -42,6 +47,7 @@ namespace OJT
 		const std::map<std::string, Session*>& GetIdMap() const;
 		void EraseClosedSessions();
 		void EraseEmptyChatRooms();
+		State::BaseState* GetState(SessionState state) const;
 	public:
 		ChatRoom& CreateChatRoom(Int32 maxUser, const std::string& title);
 	};

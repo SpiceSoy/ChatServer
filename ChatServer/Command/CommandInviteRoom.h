@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file ICommand.h
+// @file CommandRoomList.h
 //
-// @brief interface of commands (H, Q, LOGIN, etc..)
+// @brief command class of viewing room list
 // 
 // @date 2022/03/02
 //
@@ -10,19 +10,15 @@
 
 
 #pragma once
-#include "../DataTypes.h"
+#include "../Command/ICommand.h"
 namespace OJT
 {
-	class Session;
-	class ChatInformation;
 	namespace ChatCommand
 	{
-		class ICommand
-		{
-		public:
-			ICommand() = default;
-			virtual ~ICommand() = default;
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const= 0;
-		};
+		//class CommandRoomList : public ICommand
+		//{
+		//public:
+		//	virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
+		//};
 	};
 };

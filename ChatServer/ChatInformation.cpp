@@ -9,8 +9,21 @@
 //=================================================================================================
 
 #include "ChatInformation.h"
+#include "State/MenuState.h"
+#include "State/LoginState.h"
+#include "State/ChatRoomState.h"
+#include "State/EmptyState.h"
 #include <memory>
 #include <algorithm>
+
+OJT::ChatInformation::ChatInformation()
+{
+	States.emplace_back(std::make_unique<State::MenuState>(CommandProcessor));
+	States.emplace_back(std::make_unique<State::LoginState>(CommandProcessor));
+	States.emplace_back(std::make_unique<State::ChatRoomState>(CommandProcessor));
+	States.emplace_back(std::make_unique<State::EmptyState>(CommandProcessor)); // 더미 / 클로즈
+	States.emplace_back(std::make_unique<State::EmptyState>(CommandProcessor)); // 더미 / 엠티
+}
 
 void OJT::ChatInformation::SetMaxSessions(UInt32 maxSessions)
 {
@@ -83,6 +96,12 @@ void OJT::ChatInformation::EraseEmptyChatRooms()
 	auto it = ChatRooms.begin();
 	auto newEnd = std::remove_if(ChatRooms.begin(), ChatRooms.end(), [](const std::unique_ptr<ChatRoom>& a) {return a.get()->GetCurrentUserCount() == 0; });
 	ChatRooms.erase(newEnd, ChatRooms.end());
+}
+
+OJT::State::BaseState* OJT::ChatInformation::GetState(SessionState state) const
+{
+	Int32 index = static_cast<Int32>(state);
+	return States[index].get();
 }
 
 OJT::ChatRoom& OJT::ChatInformation::CreateChatRoom(Int32 maxUser, const std::string& title)

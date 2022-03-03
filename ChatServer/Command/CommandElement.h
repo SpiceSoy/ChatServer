@@ -1,22 +1,27 @@
 //=================================================================================================
-// @file SessionState.h
+// @file Commands.h
 //
-// @brief enum class description for Session State
+// @brief total header for chat commands
 // 
-// @date 2022/02/28
+// @date 2022/03/02
 //
 // Copyright 2022 Netmarble Neo, Inc. All Rights Reserved.
 //=================================================================================================
 
+
 #pragma once
+#include "../DataTypes.h"
+#include "../Command/ECommand.h"
+
 namespace OJT
 {
-	enum class SessionState
+	namespace ChatCommand
 	{
-		MAIN_MENU,
-		WAIT_LOGIN,
-		CHAT_ROOM,
-		CLOSE,
-		EMPTY
+		struct CommandElement
+		{
+			const Char* prefix;
+			bool shouldArgument;
+			ECommand command;
+		};
 	};
-}
+};

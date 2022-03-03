@@ -17,6 +17,10 @@
 #include <stdarg.h>
 namespace OJT
 {
+	namespace State
+	{
+		class BaseState;
+	};
 	class ChatRoom;
 	class ChatInformation;
 	class Session
@@ -29,16 +33,16 @@ namespace OJT
 		UInt64 SendBytes = 0;
 		std::vector<Byte> SendBuffer;
 
-		SessionState State = SessionState::EMPTY;
 		std::string Id;
 
 		std::string AddressText;
 		UInt16 Port;
 		ChatInformation * const Information = nullptr;
 		ChatRoom* Room = nullptr;
+		State::BaseState* State = nullptr;
 	public:
 		Session(SocketHandle socket, ChatInformation* information)
-			: Socket(socket), Information(information)
+			: Socket(socket), Information(information), Port(0)
 		{
 			ReadBuffer.resize(1024);
 			SendBuffer.resize(1024);
@@ -65,7 +69,6 @@ namespace OJT
 	private:
 		void SendByte(const Byte* data, UInt64 size);
 	protected:
-		void OnStateChenge(SessionState newState);
 		void OnReciveLine(const Char* input);
 	};
 };

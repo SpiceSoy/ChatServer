@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Command">
       <UniqueIdentifier>{e925190c-1529-4673-ae05-e2ef6fce0fcf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\State">
+      <UniqueIdentifier>{52228c61-ec7c-4b3a-99b9-8c920d3d316b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\State">
+      <UniqueIdentifier>{754ad65c-8282-4a47-801f-a546d223db77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DataTypes.h">
@@ -31,12 +37,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChatServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SessionState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StateFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ChatRoom.h">
@@ -84,7 +84,7 @@
     <ClInclude Include="Command\CommandHelpInRoom.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
-    <ClInclude Include="Command\Commands.h">
+    <ClInclude Include="Command\ECommand.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
     <ClInclude Include="Command\CommandWrongArgument.h">
@@ -102,6 +102,36 @@
     <ClInclude Include="Command\CommandPlsLogin.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Command\CommandProcessor.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandInviteRoom.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="State\BaseState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandSet.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandElement.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="State\ChatRoomState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="State\LoginState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="State\MenuState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SessionState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="State\EmptyState.h">
+      <Filter>Header Files\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp">
@@ -114,9 +144,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Session.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StateFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChatRoom.cpp">
@@ -172,6 +199,27 @@
     </ClCompile>
     <ClCompile Include="Command\CommandPlsLogin.cpp">
       <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandProcessor.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandInviteRoom.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="State\BaseState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State\ChatRoomState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State\LoginState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State\MenuState.cpp">
+      <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="State\EmptyState.cpp">
+      <Filter>Source Files\State</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

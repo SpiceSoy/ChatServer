@@ -27,3 +27,30 @@
 #include "../Command/CommandPlsCommand.h"
 #include "../Command/CommandLogin.h"
 #include "../Command/CommandPlsLogin.h"
+
+namespace OJT
+{
+	namespace ChatCommand
+	{
+		enum class ECommand
+		{
+			EnterRoom,
+			Exit,
+			HelpInMenu,
+			HelpInRoom,
+			MakeRoom,
+			QuitRoom,
+			RoomInfo,
+			RoomList,
+			UserInfo,
+			UserList,
+			Whisper,
+			WrongArgument,
+			SendRoomChat,
+			PlsCommand,
+			Login,
+			PlsLogin,
+			Invite,
+		};
+	};
+};

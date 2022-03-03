@@ -34,9 +34,16 @@ void OJT::ChatCommand::CommandEnterRoom::Execute(const Char* argument, Session& 
 		if (information.HasChatRoom(index))
 		{
 			ChatRoom& room = information.GetChatRoom(index);
-			session.SetChatRoom(&room);
-			room.EnterUser(session);
-			session.SetState(SessionState::CHAT_ROOM);
+			if (room.GetCurrentUserCount() >= room.GetMaxUser())
+			{
+				session.SendText(CONSTANT::TEXT::ALERT_NO_SPACE);
+			}
+			else 
+			{
+				session.SetChatRoom(&room);
+				room.EnterUser(session);
+				session.SetState(SessionState::CHAT_ROOM);
+			}
 		}
 		else
 		{

@@ -32,6 +32,9 @@ void OJT::ChatCommand::CommandMakeRoom::Execute(const Char* argument, Session& s
 	{
 		if (CONSTANT::VALUE::ROOM_MIN_USER <= maxUser && maxUser <= CONSTANT::VALUE::ROOM_MAX_USER)
 		{
+			ChatRoom* currentChatRoom = session.GetChatRoom();
+			if (currentChatRoom != nullptr) currentChatRoom->ExitUser(session);
+
 			ChatRoom& room = information.CreateChatRoom(maxUser, title);
 			session.SendText(CONSTANT::TEXT::ROOM_CREATED);
 			session.SetChatRoom(&room);
