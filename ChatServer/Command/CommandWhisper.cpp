@@ -14,7 +14,6 @@
 #include "ChatInformation.h"
 #include "Session.h"
 #include "StringUtill.h"
-#include <sstream>
 #include <string>
 
 void OJT::ChatCommand::CommandWhisper::Execute( const Char* argument, Session& session, ChatInformation& information ) const

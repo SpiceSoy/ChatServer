@@ -14,7 +14,6 @@
 #include "ChatInformation.h"
 #include "ChatRoom.h"
 #include "Session.h"
-#include <sstream>
 #include <string>
 
 void OJT::ChatCommand::CommandQuitRoom::Execute( const Char* argument, Session& session, ChatInformation& information ) const

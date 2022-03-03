@@ -14,12 +14,10 @@
 #include "ChatInformation.h"
 #include "ChatRoom.h"
 #include "Session.h"
-#include <sstream>
 #include <string>
 
 void OJT::ChatCommand::CommandRoomList::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	std::stringstream sstream; //임시로 사용
 	auto& idMap = information.GetIdMap();
 	session.SendText( CONSTANT::TEXT::LINE );
 	Int32 roomIndex = 1;
@@ -33,6 +31,5 @@ void OJT::ChatCommand::CommandRoomList::Execute( const Char* argument, Session& 
 		);
 		roomIndex++;
 	}
-	session.SendText( sstream.str().c_str() );
 	session.SendText( CONSTANT::TEXT::LINE );
 }

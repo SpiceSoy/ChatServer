@@ -16,7 +16,6 @@
 #include "ChatRoom.h"
 #include "Session.h"
 #include "StringUtill.h"
-#include <sstream>
 #include <string>
 
 OJT::ChatCommand::CommandProcessor::CommandProcessor()
