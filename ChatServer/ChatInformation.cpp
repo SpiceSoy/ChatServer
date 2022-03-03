@@ -74,6 +74,7 @@ void OJT::ChatInformation::EraseClosedSessions()
 {
 	auto it = Sessions.begin();
 	auto newEnd = std::remove_if(Sessions.begin(), Sessions.end(), [](const std::unique_ptr<Session>& a) {return a.get()->IsClosed(); });
+	std::for_each(newEnd, Sessions.end(), [&](const std::unique_ptr<Session>& a) { IdMap.erase(a->GetId()); });
 	Sessions.erase(newEnd, Sessions.end());
 }
 
