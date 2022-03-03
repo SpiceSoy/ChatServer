@@ -36,7 +36,7 @@ void OJT::ChatCommand::CommandRoomInfo::Execute( const Char* argument, Session& 
 	}
 	else
 	{
-		targetRoom = &information.GetChatRoom( roomIndex );
+		if( information.HasChatRoom(roomIndex) ) targetRoom = &information.GetChatRoom( roomIndex );
 	}
 	if ( targetRoom != nullptr && information.HasChatRoom( roomIndex ) )
 	{
