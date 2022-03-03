@@ -102,5 +102,5 @@ Bool OJT::ChatCommand::CommandProcessor::IsStartedWith(const Char* input, const 
 
 Bool OJT::ChatCommand::CommandProcessor::IsValidArgument(const Char* argument)
 {
-	return *argument != '\0' && *argument != '\n' && *argument != ' ';
+	return argument != nullptr && *argument != '\0' && *argument != '\n' && *argument != ' ';
 }
