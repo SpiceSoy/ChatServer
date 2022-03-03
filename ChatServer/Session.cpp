@@ -73,6 +73,10 @@ void OJT::Session::ProcessRecive()
 			OnReciveLine( reinterpret_cast<const Char*>( ReadBuffer.data() ) );
 			RecvBytes = 0;
 		}
+		else if ( expectEnd[ 0 ] == '\b' )
+		{
+			if ( RecvBytes != 0 ) RecvBytes -= 1;
+		}
 		else
 		{
 			RecvBytes += recivedBytes;
