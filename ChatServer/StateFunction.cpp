@@ -142,7 +142,7 @@ static void ExecuteCommand(
 	const Char* const commands[],
 	const Char* const shouldArgument[],
 	int commandCount,
-	const std::unordered_map<const Char*, const OJT::ChatCommand::ICommand*> commandMap)
+	const std::unordered_map<const Char*, const OJT::ChatCommand::ICommand*>& commandMap) //
 {
 	auto ret = CommandSwitch(input, commands, shouldArgument, commandCount);
 	const Char* command = ret.first;
