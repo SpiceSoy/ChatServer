@@ -73,8 +73,8 @@ const std::map<std::string, OJT::Session*>& OJT::ChatInformation::GetIdMap() con
 void OJT::ChatInformation::EraseClosedSessions()
 {
 	auto it = Sessions.begin();
+	std::for_each(it, Sessions.end(), [this](const std::unique_ptr<Session>& a) { if(a.get()->IsClosed()) IdMap.erase(a->GetId()); });
 	auto newEnd = std::remove_if(Sessions.begin(), Sessions.end(), [](const std::unique_ptr<Session>& a) {return a.get()->IsClosed(); });
-	std::for_each(newEnd, Sessions.end(), [&](const std::unique_ptr<Session>& a) { IdMap.erase(a->GetId()); });
 	Sessions.erase(newEnd, Sessions.end());
 }
 
