@@ -42,7 +42,7 @@ void OJT::ChatCommand::CommandRoomInfo::Execute(const Char* argument, Session& s
 	{
 		session.SendText(CONSTANT::TEXT::LINE);
 		session.SendFormattedText(CONSTANT::FORMAT::ROOM_LIST,
-			roomIndex,
+			roomIndex + 1,
 			targetRoom->GetCurrentUserCount(),
 			targetRoom->GetMaxUser(),
 			targetRoom->GetTitle().c_str()
