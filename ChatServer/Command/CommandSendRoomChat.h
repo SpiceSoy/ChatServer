@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandExit.h
+// @file CommandSendRoomChat.h
 //
-// @brief command class of exit server
+// @brief dummy command class of send chat in room
 // 
 // @date 2022/03/02
 //
@@ -15,7 +15,7 @@ namespace OJT
 {
 	namespace ChatCommand
 	{
-		class CommandExit : public ICommand
+		class CommandSendRoomChat: public ICommand
 		{
 		public:
 			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;

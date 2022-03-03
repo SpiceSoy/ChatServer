@@ -16,7 +16,7 @@
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandMakeRoom::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandMakeRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	std::stringstream sstream;
 	sstream.str(argument);

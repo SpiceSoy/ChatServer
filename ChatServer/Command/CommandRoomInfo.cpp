@@ -18,7 +18,7 @@
 #include <string>
 
 
-void OJT::ChatCommand::CommandRoomInfo::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandRoomInfo::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	std::stringstream sstream; //임시로 사용
 	sstream.str(argument);

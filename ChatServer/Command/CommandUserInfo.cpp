@@ -16,7 +16,7 @@
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandUserInfo::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandUserInfo::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	if (information.HasId(argument))
 	{

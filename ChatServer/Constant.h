@@ -41,6 +41,7 @@ namespace OJT
 			constexpr const Char* TOOLTIP_ARG_WHISPER = "[상대방ID] [메시지]";
 			constexpr const Char* TOOLTIP_ARG_MAKE_ROOM = "[최대인원] [방제목]";
 			constexpr const Char* TOOLTIP_ARG_ENTER_ROOM = "[방번호]";
+			constexpr const Char* TOOLTIP_ARG_LOGIN = "[ID]";
 			constexpr const Char* TOOLTIP_ARG_NO_ARG = "";
 
 			constexpr const Char* ALERT_ARGUMENT_WRONG = "명령어 인자가 이상합니다.\r\n";
@@ -66,6 +67,7 @@ namespace OJT
 			constexpr const Char* ALERT_ROOM_MAX_USER = "대화방 인원을 %d-%d명 사이로 입력해주세요.\r\n";
 			constexpr const Char* USER_ENTER_ROOM = "** %s님이 들어오였습니다. (현재 인원 %d/%d)\r\n";
 			constexpr const Char* SERVER_SIDE_USER_LOG = "%s:%d [%s] %s\r\n";
+			constexpr const Char* CHAT = "%s> %s\r\n";
 		};
 		namespace COMMAND
 		{
@@ -89,6 +91,9 @@ namespace OJT
 			constexpr const Char* CHATROOM_MAKE_ROOM = "/O";
 			constexpr const Char* CHATROOM_QUIT_ROOM = "/Q";
 			constexpr const Char* CHATROOM_EXIT = "/X";
+
+			constexpr const Char* WRONG_ARGUMENT = "_WRONG_WRONG_";
+			constexpr const Char* NO_COMMAND = "_NO_COMMAND_";
 		};
 
 		namespace VALUE
@@ -96,6 +101,14 @@ namespace OJT
 			constexpr const Char* VERSION = "0.1";
 			constexpr const Int32 ROOM_MAX_USER = 20;
 			constexpr const Int32 ROOM_MIN_USER = 2;
+
+			constexpr const Char* LOGIN_COMMANDS[] = {
+				COMMAND::LOGIN,
+			};
+			constexpr const Char* LOGIN_ARGS[] = {
+				TEXT::TOOLTIP_ARG_LOGIN,
+			};
+			constexpr Int32 LOGIN_COMMAND_COUNT = sizeof(OJT::CONSTANT::VALUE::LOGIN_COMMANDS) / sizeof(OJT::CONSTANT::VALUE::LOGIN_COMMANDS[0]);
 
 			constexpr const Char* MENU_COMMANDS[] = {
 				COMMAND::MENU_HELP,

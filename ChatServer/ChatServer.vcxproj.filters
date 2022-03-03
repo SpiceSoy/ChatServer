@@ -84,6 +84,24 @@
     <ClInclude Include="Command\CommandHelpInRoom.h">
       <Filter>Header Files\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Command\Commands.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandWrongArgument.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandPlsCommand.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandSendRoomChat.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandLogin.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Command\CommandPlsLogin.h">
+      <Filter>Header Files\Command</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp">
@@ -138,6 +156,21 @@
       <Filter>Source Files\Command</Filter>
     </ClCompile>
     <ClCompile Include="Command\CommandHelpInRoom.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandWrongArgument.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandPlsCommand.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandSendRoomChat.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandLogin.cpp">
+      <Filter>Source Files\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Command\CommandPlsLogin.cpp">
       <Filter>Source Files\Command</Filter>
     </ClCompile>
   </ItemGroup>

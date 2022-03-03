@@ -13,7 +13,7 @@
 #include "../Constant.h"
 #include "../Session.h"
 
-void OJT::ChatCommand::CommandHelpInRoom::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandHelpInRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	session.SendText(CONSTANT::TEXT::LINE);
 	for (Int32 i = 0; i < CONSTANT::VALUE::CHATROOM_COMMAND_COUNT; i++)

@@ -17,7 +17,7 @@
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandRoomList::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandRoomList::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	std::stringstream sstream; //임시로 사용
 	auto& idMap = information.GetIdMap();

@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandExit.h
+// @file CommandLogin.h
 //
-// @brief command class of exit server
+// @brief command class of whisper
 // 
 // @date 2022/03/02
 //
@@ -15,7 +15,7 @@ namespace OJT
 {
 	namespace ChatCommand
 	{
-		class CommandExit : public ICommand
+		class CommandLogin : public ICommand
 		{
 		public:
 			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;

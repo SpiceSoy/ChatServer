@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandExit.h
+// @file CommandHelpInMenu.h
 //
-// @brief command class of exit server
+// @brief dummy command class of wrong argument
 // 
 // @date 2022/03/02
 //
@@ -15,7 +15,7 @@ namespace OJT
 {
 	namespace ChatCommand
 	{
-		class CommandExit : public ICommand
+		class CommandWrongArgument: public ICommand
 		{
 		public:
 			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;

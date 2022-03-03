@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandQuitRoom.cpp
+// @file CommandPlsLoginhisper.cpp
 //
-// @brief command class of quit room
+// @brief command class of alert login
 // 
 // @date 2022/03/02
 //
@@ -9,17 +9,14 @@
 //=================================================================================================
 
 
-#include "../Command/CommandQuitRoom.h"
+#include "../Command/CommandPlsLogin.h"
 #include "../Constant.h"
 #include "../Session.h"
 #include "../ChatInformation.h"
-#include "../ChatRoom.h"
 #include <sstream>
 #include <string>
 
-void OJT::ChatCommand::CommandQuitRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandPlsLogin::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
-	session.GetChatRoom()->ExitUser(session);
-	session.SetChatRoom(nullptr);
-	session.SetState(SessionState::MAIN_MENU);
+	session.SendText(CONSTANT::TEXT::PLS_LOGIN);
 }

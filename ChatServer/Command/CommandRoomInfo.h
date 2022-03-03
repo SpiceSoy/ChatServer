@@ -18,7 +18,7 @@ namespace OJT
 		class CommandRoomInfo : public ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) override;
+			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
 		};
 	};
 };

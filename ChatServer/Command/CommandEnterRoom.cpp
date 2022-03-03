@@ -16,7 +16,7 @@
 #include "../ChatRoom.h"
 #include <sstream>
 
-void OJT::ChatCommand::CommandEnterRoom::Execute(const Char* argument, Session& session, ChatInformation& information)
+void OJT::ChatCommand::CommandEnterRoom::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	std::stringstream sstream; // 커맨드 읽기 임시로 설정 , 이후 하나로 통일
 	sstream.str(argument);

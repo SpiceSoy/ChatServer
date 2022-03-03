@@ -1,7 +1,7 @@
 //=================================================================================================
-// @file CommandExit.cpp
+// @file CommandWrongArgument.cpp
 //
-// @brief command class of exit server
+// @brief dummy command class of wrong argument
 // 
 // @date 2022/03/02
 //
@@ -9,12 +9,11 @@
 //=================================================================================================
 
 
-#include "../Command/CommandExit.h"
+#include "../Command/CommandWrongArgument.h"
 #include "../Constant.h"
 #include "../Session.h"
 
-void OJT::ChatCommand::CommandExit::Execute(const Char* argument, Session& session, ChatInformation& information) const
+void OJT::ChatCommand::CommandWrongArgument::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
-	session.SendText(CONSTANT::TEXT::GOODBYE_USER);
-	session.Close();
+	session.SendText(CONSTANT::TEXT::ALERT_ARGUMENT_WRONG);
 }

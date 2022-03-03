@@ -20,7 +20,7 @@ namespace OJT
 		class ICommand
 		{
 		public:
-			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) = 0;
+			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const= 0;
 		};
 	};
 };
