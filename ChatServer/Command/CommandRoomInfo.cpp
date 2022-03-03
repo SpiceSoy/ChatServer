@@ -21,13 +21,15 @@
 void OJT::ChatCommand::CommandRoomInfo::Execute(const Char* argument, Session& session, ChatInformation& information) const
 {
 	std::stringstream sstream; //임시로 사용
-	sstream.str(argument);
 	constexpr Int32 NOT_IN_ROOM = -1;
 	Int32 roomIndex = NOT_IN_ROOM;
 	ChatRoom* targetRoom = nullptr;
+
+	if(argument) sstream.str(argument);
 	sstream >> roomIndex;
 	roomIndex -= 1;
-	if (sstream.bad())
+
+	if (sstream.bad() || !argument)
 	{
 		targetRoom = session.GetChatRoom();
 		if (targetRoom != nullptr) roomIndex = information.GetChatRoomIndex(*targetRoom);

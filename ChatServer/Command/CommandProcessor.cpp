@@ -70,7 +70,7 @@ std::pair<OJT::ChatCommand::ECommand, const Char*> OJT::ChatCommand::CommandProc
 			}
 			else
 			{
-				return std::make_pair(set.command, nullptr);
+				return std::make_pair(set.command, argument);
 			}
 		}
 	}

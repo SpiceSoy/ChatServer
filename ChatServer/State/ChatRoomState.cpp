@@ -18,7 +18,7 @@ OJT::State::ChatRoomState::ChatRoomState(const ChatCommand::CommandProcessor& pr
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_EXIT,		false,	OJT::ChatCommand::ECommand::Exit},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_HELP,		false,	OJT::ChatCommand::ECommand::HelpInRoom},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_MAKE_ROOM, true,	OJT::ChatCommand::ECommand::MakeRoom},
-				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_ROOM_INFO, true,	OJT::ChatCommand::ECommand::RoomInfo},
+				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_ROOM_INFO, false,	OJT::ChatCommand::ECommand::RoomInfo},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_ROOM_LIST, false,	OJT::ChatCommand::ECommand::RoomList},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_USER_INFO, true,	OJT::ChatCommand::ECommand::UserInfo},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_USER_LIST, false,	OJT::ChatCommand::ECommand::UserList},
