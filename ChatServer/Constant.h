@@ -46,6 +46,7 @@ namespace OJT
 			constexpr const Char* TOOLTIP_ARG_LOGIN = "[ID]";
 			constexpr const Char* TOOLTIP_ARG_NO_ARG = "";
 
+			constexpr const Char* ALERT_ID_CANT_BLACK = "ID는 공백을 포함할 수 없습니다. 다시 입력해 주세요.\r\n";
 			constexpr const Char* ALERT_ARGUMENT_WRONG = "명령어 인자가 이상합니다.\r\n";
 			constexpr const Char* ALERT_PLS_COMMAND = "명령어를 입력해주세요.\r\n";
 			constexpr const Char* ALERT_NO_ROOM_NUM = "해당 번호의 방이 존재하지 않습니다.\r\n";

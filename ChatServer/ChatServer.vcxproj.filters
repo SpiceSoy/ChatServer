@@ -132,6 +132,9 @@
     <ClInclude Include="State\StateEmpty.h">
       <Filter>Header Files\State</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatServer.cpp">
@@ -220,6 +223,9 @@
     </ClCompile>
     <ClCompile Include="State\StateEmpty.cpp">
       <Filter>Source Files\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtill.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

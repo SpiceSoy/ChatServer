@@ -60,11 +60,9 @@ void OJT::ChatCommand::CommandRoomInfo::Execute( const Char* argument, Session& 
 		}
 		session.SendText( sstream.str().c_str() );
 		session.SendText( CONSTANT::TEXT::LINE );
-		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 	}
 	else
 	{
 		session.SendText( CONSTANT::TEXT::ALERT_NO_ROOM_NUM );
-		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 	}
 }

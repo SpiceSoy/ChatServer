@@ -181,6 +181,7 @@
     <ClInclude Include="State\StateEmpty.h" />
     <ClInclude Include="State\StateLogin.h" />
     <ClInclude Include="State\StateMenu.h" />
+    <ClInclude Include="StringUtill.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChatRoom.cpp" />
@@ -212,6 +213,7 @@
     <ClCompile Include="State\StateEmpty.cpp" />
     <ClCompile Include="State\StateLogin.cpp" />
     <ClCompile Include="State\StateMenu.cpp" />
+    <ClCompile Include="StringUtill.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

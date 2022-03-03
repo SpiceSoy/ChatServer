@@ -13,23 +13,21 @@
 #include "Constant.h"
 #include "ChatInformation.h"
 #include "Session.h"
+#include "StringUtill.h"
 #include <sstream>
 #include <string>
 
 void OJT::ChatCommand::CommandWhisper::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	std::stringstream sstream;
-	sstream.str( argument );
 	std::string id;
 	std::string text;
-	sstream >> id >> text;
-	if ( sstream.bad() )
+	StringUtill::SplitString( argument, id, text );
+	if ( !StringUtill::ValidText(id) || !StringUtill::ValidText( text ) )
 	{
 		session.SendText( CONSTANT::TEXT::ALERT_ARGUMENT_WRONG );
 	}
 	else if ( information.HasId( id ) )
 	{
-		sstream.clear();
 		Session& targetSession = information.FindSession( id );
 		targetSession.SendFormattedText( CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text.c_str() );
 	}

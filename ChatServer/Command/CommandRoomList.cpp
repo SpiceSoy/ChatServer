@@ -35,5 +35,4 @@ void OJT::ChatCommand::CommandRoomList::Execute( const Char* argument, Session& 
 	}
 	session.SendText( sstream.str().c_str() );
 	session.SendText( CONSTANT::TEXT::LINE );
-	session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );
 }

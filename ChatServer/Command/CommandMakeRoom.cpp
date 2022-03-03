@@ -11,19 +11,20 @@
 
 #include "Command/CommandMakeRoom.h"
 #include "Constant.h"
-#include "Session.h"
 #include "ChatInformation.h"
+#include "Session.h"
+#include "StringUtill.h"
 #include <sstream>
 #include <string>
 
 void OJT::ChatCommand::CommandMakeRoom::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
-	std::stringstream sstream;
-	sstream.str( argument );
-	Int32 maxUser = 0;
+	Int32 maxUser = -9999;
+	std::string number;
 	std::string title;
-	sstream >> maxUser >> title;
-	if ( sstream.bad() )
+	StringUtill::SplitString( argument, number, title );
+	maxUser = std::atoi( number.c_str() );
+	if ( !StringUtill::ValidText( number ) || !StringUtill::ValidText( title ) )
 	{
 		session.SendText( CONSTANT::TEXT::ALERT_ARGUMENT_WRONG );
 		session.SendFormattedText( CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT );

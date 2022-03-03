@@ -15,6 +15,7 @@
 #include "ChatInformation.h"
 #include "ChatRoom.h"
 #include "Session.h"
+#include "StringUtill.h"
 #include <sstream>
 #include <string>
 
@@ -102,5 +103,5 @@ Bool OJT::ChatCommand::CommandProcessor::IsStartedWith( const Char* input, const
 
 Bool OJT::ChatCommand::CommandProcessor::IsValidArgument( const Char* argument )
 {
-	return argument != nullptr && *argument != '\0' && *argument != '\n' && *argument != ' ';
+	return StringUtill::ValidText( argument );
 }
