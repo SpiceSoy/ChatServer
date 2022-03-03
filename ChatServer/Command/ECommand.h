@@ -27,6 +27,7 @@
 #include "../Command/CommandPlsCommand.h"
 #include "../Command/CommandLogin.h"
 #include "../Command/CommandPlsLogin.h"
+#include "../Command/CommandInviteRoom.h"
 
 namespace OJT
 {
@@ -50,7 +51,7 @@ namespace OJT
 			PlsCommand,
 			Login,
 			PlsLogin,
-			Invite,
+			InviteRoom,
 		};
 	};
 };

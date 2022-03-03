@@ -36,7 +36,7 @@ OJT::ChatCommand::CommandProcessor::CommandProcessor()
 	commands.emplace_back(std::make_unique<CommandPlsCommand>());
 	commands.emplace_back(std::make_unique<CommandLogin>());
 	commands.emplace_back(std::make_unique<CommandPlsLogin>());
-	//commands.emplace_back(std::make_unique<CommandInvite>());
+	commands.emplace_back(std::make_unique<CommandInviteRoom>());
 }
 
 void OJT::ChatCommand::CommandProcessor::ExecuteCommand(Session& session, ChatInformation& info, const Char* input, const CommandSet& commandSet) const

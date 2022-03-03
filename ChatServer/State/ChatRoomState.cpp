@@ -23,6 +23,7 @@ OJT::State::ChatRoomState::ChatRoomState(const ChatCommand::CommandProcessor& pr
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_USER_INFO, true,	OJT::ChatCommand::ECommand::UserInfo},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_USER_LIST, false,	OJT::ChatCommand::ECommand::UserList},
 				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_WHISPHER,	true,	OJT::ChatCommand::ECommand::Whisper},
+				ChatCommand::CommandElement{OJT::CONSTANT::COMMAND::CHATROOM_INVITE_ROOM,true,	OJT::ChatCommand::ECommand::InviteRoom},
 			}
 			))
 {

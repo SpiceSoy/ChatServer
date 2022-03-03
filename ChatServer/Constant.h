@@ -31,6 +31,7 @@ namespace OJT
 			constexpr const Char* TOOLTIP_ROOM_INFO = "대화방 정보 보기";
 			constexpr const Char* TOOLTIP_USER_INFO = "이용자 정보 보기";
 			constexpr const Char* TOOLTIP_WHISPER = "쪽지 보내기";
+			constexpr const Char* TOOLTIP_INVITE_ROOM = "초대 메시지 보내기";
 			constexpr const Char* TOOLTIP_MAKE_ROOM = "대화방 만들기";
 			constexpr const Char* TOOLTIP_ENTER_ROOM = "대화방 들어가기";
 			constexpr const Char* TOOLTIP_QUIT_ROOM = "대화방 나가기";
@@ -39,6 +40,7 @@ namespace OJT
 			constexpr const Char* TOOLTIP_ARG_ROOM_INFO= "[방번호]";
 			constexpr const Char* TOOLTIP_ARG_USER_INFO = "[상대방ID]";
 			constexpr const Char* TOOLTIP_ARG_WHISPER = "[상대방ID] [메시지]";
+			constexpr const Char* TOOLTIP_ARG_INVITE_ROOM = "[상대방ID]";
 			constexpr const Char* TOOLTIP_ARG_MAKE_ROOM = "[최대인원] [방제목]";
 			constexpr const Char* TOOLTIP_ARG_ENTER_ROOM = "[방번호]";
 			constexpr const Char* TOOLTIP_ARG_LOGIN = "[ID]";
@@ -49,6 +51,7 @@ namespace OJT
 			constexpr const Char* ALERT_NO_ROOM_NUM = "해당 번호의 방이 존재하지 않습니다.\r\n";
 			constexpr const Char* ALERT_NO_ID_USER = "해당 ID를 가진 유저가 존재하지 않습니다.\r\n";
 			constexpr const Char* ALERT_NO_SPACE = "방에 남아있는 자리가 없습니다.\r\n";
+			constexpr const Char* ALERT_NO_IN_ROOM = "현재 방에 위치하고 있지 않아 초대메시지를 보낼 수 없습니다.\r\n";
 
 			constexpr const Char* ROOM_CREATED = "대화방이 개설되었습니다.\r\n";
 			constexpr const Char* GOODBYE_USER = "연결을 종료합니다. 이용해주셔서 감사합니다.\r\n";
@@ -65,6 +68,7 @@ namespace OJT
 			constexpr const Char* USER_IN_ROOM= "%s님은 현재 %d번 방에 참여중입니다.\r\n";
 			constexpr const Char* USER_IN_MENU = "%s님은 현재 메인 메뉴에서 대기중입니다.\r\n";
 			constexpr const Char* WHISPER = "# %s님의 쪽지 ==> %s\r\n";
+			constexpr const Char* INVITE_ROOM = "# %s님이 %d번방으로 초대합니다.\r\n";
 			constexpr const Char* ALERT_ROOM_MAX_USER = "대화방 인원을 %d-%d명 사이로 입력해주세요.\r\n";
 			constexpr const Char* USER_ENTER_ROOM = "** %s님이 들어오였습니다. (현재 인원 %d/%d)\r\n";
 			constexpr const Char* SERVER_SIDE_USER_LOG = "%s:%d [%s] %s\r\n";
@@ -89,6 +93,7 @@ namespace OJT
 			constexpr const Char* CHATROOM_ROOM_INFO = "/ST";
 			constexpr const Char* CHATROOM_USER_INFO = "/PF";
 			constexpr const Char* CHATROOM_WHISPHER = "/TO";
+			constexpr const Char* CHATROOM_INVITE_ROOM = "/IN";
 			constexpr const Char* CHATROOM_MAKE_ROOM = "/O";
 			constexpr const Char* CHATROOM_QUIT_ROOM = "/Q";
 			constexpr const Char* CHATROOM_EXIT = "/X";
@@ -153,6 +158,7 @@ namespace OJT
 				COMMAND::CHATROOM_USER_INFO,
 				COMMAND::CHATROOM_WHISPHER,
 				COMMAND::CHATROOM_MAKE_ROOM,
+				COMMAND::CHATROOM_INVITE_ROOM,
 				COMMAND::CHATROOM_QUIT_ROOM,
 				COMMAND::CHATROOM_EXIT,
 			};
@@ -164,6 +170,7 @@ namespace OJT
 				TEXT::TOOLTIP_ARG_USER_INFO,
 				TEXT::TOOLTIP_ARG_WHISPER,
 				TEXT::TOOLTIP_ARG_MAKE_ROOM,
+				TEXT::TOOLTIP_ARG_INVITE_ROOM,
 				TEXT::TOOLTIP_ARG_NO_ARG,
 				TEXT::TOOLTIP_ARG_NO_ARG,
 			};
@@ -175,6 +182,7 @@ namespace OJT
 				TEXT::TOOLTIP_USER_INFO,
 				TEXT::TOOLTIP_WHISPER,
 				TEXT::TOOLTIP_MAKE_ROOM,
+				TEXT::TOOLTIP_INVITE_ROOM,
 				TEXT::TOOLTIP_QUIT_ROOM,
 				TEXT::TOOLTIP_EXIT,
 			};

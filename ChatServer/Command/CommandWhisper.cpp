@@ -26,18 +26,15 @@ void OJT::ChatCommand::CommandWhisper::Execute(const Char* argument, Session& se
 	if (sstream.bad())
 	{
 		session.SendText(CONSTANT::TEXT::ALERT_ARGUMENT_WRONG);
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
 	}
 	else if (information.HasId(id))
 	{
 		sstream.clear();
 		Session& targetSession = information.FindSession(id);
 		targetSession.SendFormattedText(CONSTANT::FORMAT::WHISPER, session.GetId().c_str(), text.c_str());
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
 	}
 	else
 	{
 		session.SendText(CONSTANT::TEXT::ALERT_NO_ID_USER);
-		session.SendFormattedText(CONSTANT::FORMAT::HELP_OR_EXIT, CONSTANT::COMMAND::MENU_HELP, CONSTANT::COMMAND::MENU_EXIT);
 	}
 }

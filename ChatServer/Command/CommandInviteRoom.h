@@ -15,10 +15,10 @@ namespace OJT
 {
 	namespace ChatCommand
 	{
-		//class CommandRoomList : public ICommand
-		//{
-		//public:
-		//	virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
-		//};
+		class CommandInviteRoom : public ICommand
+		{
+		public:
+			virtual void Execute(const Char* argument, Session& session, ChatInformation& information) const override;
+		};
 	};
 };
