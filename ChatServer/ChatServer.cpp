@@ -135,7 +135,7 @@ void OJT::ChatServer::Select()
 	for ( auto& session : Information.GetSessions() )
 	{
 		if ( !FD_ISSET( session->GetSocket(), &read ) ) continue;
-		session->ProcessRecive();
+		session->ProcessReceive();
 	}
 	//Send
 	for ( auto& session : Information.GetSessions() )

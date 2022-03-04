@@ -55,12 +55,12 @@ void OJT::Session::ProcessSend()
 	}
 }
 
-void OJT::Session::ProcessRecive()
+void OJT::Session::ProcessReceive()
 {
 	// 이름 겹쳐서 로컬변수 전문 작성
-	Int32 recivedBytes = recv( Socket, ( (char*)ReadBuffer.data() ) + RecvBytes, sizeof( Char ), 0 );
+	Int32 receivedBytes = recv( Socket, ( (char*)ReadBuffer.data() ) + RecvBytes, sizeof( Char ), 0 );
 	Char* expectEnd = reinterpret_cast<Char*>( ReadBuffer.data() + RecvBytes );
-	if ( recivedBytes == 0 || recivedBytes == SOCKET_ERROR )
+	if ( receivedBytes == 0 || receivedBytes == SOCKET_ERROR )
 	{
 		Close();
 	}
@@ -70,7 +70,7 @@ void OJT::Session::ProcessRecive()
 		{
 			expectEnd[ 0 ] = '\0';
 			if ( expectEnd != reinterpret_cast<Char*>( ReadBuffer.data() ) ) *( expectEnd - 1 ) = '\0';
-			OnReciveLine( reinterpret_cast<const Char*>( ReadBuffer.data() ) );
+			OnLineReceived( reinterpret_cast<const Char*>( ReadBuffer.data() ) );
 			RecvBytes = 0;
 		}
 		else if ( expectEnd[ 0 ] == '\b' )
@@ -79,7 +79,7 @@ void OJT::Session::ProcessRecive()
 		}
 		else
 		{
-			RecvBytes += recivedBytes;
+			RecvBytes += receivedBytes;
 			bool expectedOver = ReadBuffer.size() < RecvBytes * 1.5;
 			if ( expectedOver ) ReadBuffer.resize( ReadBuffer.size() * 2 );
 		}
@@ -165,8 +165,8 @@ void OJT::Session::LogInput( const Char* input ) const
 }
 
 
-void OJT::Session::OnReciveLine( const Char* input )
+void OJT::Session::OnLineReceived( const Char* input )
 {
 	LogInput( input );
-	if ( State != nullptr ) State->OnLineRecived( *this, *Information, input );
+	if ( State != nullptr ) State->OnLineReceived( *this, *Information, input );
 }

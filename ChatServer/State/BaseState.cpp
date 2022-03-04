@@ -26,7 +26,7 @@ void OJT::State::BaseState::OnEnter( Session& session, ChatInformation& informat
 {
 }
 
-void OJT::State::BaseState::OnLineRecived( Session& session, ChatInformation& information, const Char* input )
+void OJT::State::BaseState::OnLineReceived( Session& session, ChatInformation& information, const Char* input )
 {
 	CommandProcessor.ExecuteCommand( session, information, input, this->CommandSet );
 }

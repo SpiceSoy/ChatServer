@@ -27,7 +27,7 @@ namespace OJT
 			BaseState(const ChatCommand::CommandProcessor&, ChatCommand::CommandSet&& commandSet);
 			virtual ~BaseState() = default;
 			virtual void OnEnter(Session& session, ChatInformation& information);
-			virtual void OnLineRecived(Session& session, ChatInformation& information, const Char* input);
+			virtual void OnLineReceived(Session& session, ChatInformation& information, const Char* input);
 		protected:
 			ChatCommand::CommandSet CommandSet;
 			const ChatCommand::CommandProcessor& CommandProcessor;

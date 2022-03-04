@@ -54,7 +54,7 @@ namespace OJT
 	public:
 		void SetState( ESessionState state );
 		void ProcessSend();
-		void ProcessRecive();
+		void ProcessReceive();
 		void SendText( const Char* message );
 		void SendFormattedText( const Char* fmt, ... );
 		void Close();
@@ -65,6 +65,6 @@ namespace OJT
 	private:
 		void SendByte( const Byte* data, UInt64 size );
 	protected:
-		void OnReciveLine( const Char* input );
+		void OnLineReceived( const Char* input );
 	};
 };
