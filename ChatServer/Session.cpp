@@ -58,15 +58,20 @@ void OJT::Session::ProcessSend()
 void OJT::Session::ProcessReceive()
 {
 	// 이름 겹쳐서 로컬변수 전문 작성
-	Int32 receivedBytes = recv( Socket, ( (char*)ReadBuffer.data() ) + RecvBytes, sizeof( Char ), 0 );
-	Char* expectEnd = reinterpret_cast<Char*>( ReadBuffer.data() + RecvBytes );
+	Int32 receivedBytes = recv( Socket, ( (char*)ReadBuffer.data() ) + RecvBytes, ReadBuffer.size() * sizeof( Byte ), 0);
+	Char* expectEnd = reinterpret_cast<Char*>( ReadBuffer.data() + RecvBytes + receivedBytes - 1 );
 	if ( receivedBytes == 0 || receivedBytes == SOCKET_ERROR )
 	{
 		Close();
 	}
 	else
 	{
-		if ( expectEnd[ 0 ] == '\n' )
+		if ( expectEnd[0] == '\0' )
+		{
+			OnLineReceived(reinterpret_cast<const Char*>(ReadBuffer.data()));
+			RecvBytes = 0;
+		}
+		else if ( expectEnd[ 0 ] == '\n' )
 		{
 			expectEnd[ 0 ] = '\0';
 			if ( expectEnd != reinterpret_cast<Char*>( ReadBuffer.data() ) ) *( expectEnd - 1 ) = '\0';
