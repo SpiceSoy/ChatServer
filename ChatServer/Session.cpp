@@ -66,28 +66,53 @@ void OJT::Session::ProcessReceive()
 	}
 	else
 	{
-		if ( expectEnd[0] == '\0' )
 		{
-			OnLineReceived(reinterpret_cast<const Char*>(ReadBuffer.data()));
-			RecvBytes = 0;
+			//RecvBytes += receivedBytes;
+			Byte* csrBegin = ReadBuffer.data();
+			Byte* csr = ReadBuffer.data() + RecvBytes;
+			Byte* csrEnd = ReadBuffer.data() + RecvBytes + receivedBytes;
+
+			while (csr != csrEnd)
+			{
+				if (*csr == '\0' && csr != csrBegin)
+				{
+					OnLineReceived(reinterpret_cast<const Char*>(csrBegin));
+					csr++;
+					csrBegin = csr;
+				}
+				else if (*csr == '\n')
+				{
+					*csr = '\0';
+					if (csr != ReadBuffer.data() && *(csr - 1) == '\r') *(csr - 1) = '\0';
+					OnLineReceived(reinterpret_cast<const Char*>(csrBegin));
+					csr++;
+					csrBegin = csr;
+				}
+				else if (*csr == '\b')
+				{
+					if (RecvBytes != 0 && csr != csrBegin)
+					{
+						RecvBytes -= 1;
+						memcpy_s(csr - 1, csrEnd - csr + 1, csr + 1, csrEnd - csr + 1);
+						csrEnd -= 1;
+					}
+				}
+				else
+				{
+					csr++;
+				}
+			}
+			if(csrBegin != csrEnd)
+			{
+				memcpy_s(ReadBuffer.data(), csrEnd - csrBegin, csrBegin, csrEnd - csrBegin);
+				RecvBytes = csrEnd - csrBegin;
+			}
+			else
+			{ 
+				RecvBytes = 0;
+			}
 		}
-		else if ( expectEnd[ 0 ] == '\n' )
-		{
-			expectEnd[ 0 ] = '\0';
-			if ( expectEnd != reinterpret_cast<Char*>( ReadBuffer.data() ) ) *( expectEnd - 1 ) = '\0';
-			OnLineReceived( reinterpret_cast<const Char*>( ReadBuffer.data() ) );
-			RecvBytes = 0;
-		}
-		else if ( expectEnd[ 0 ] == '\b' )
-		{
-			if ( RecvBytes != 0 ) RecvBytes -= 1;
-		}
-		else
-		{
-			RecvBytes += receivedBytes;
-			bool expectedOver = ReadBuffer.size() < RecvBytes * 1.5;
-			if ( expectedOver ) ReadBuffer.resize( ReadBuffer.size() * 2 );
-		}
+
 	}
 }
 
