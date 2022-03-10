@@ -46,6 +46,8 @@ namespace OJT
 			constexpr const Char* TOOLTIP_ARG_LOGIN = "[ID]";
 			constexpr const Char* TOOLTIP_ARG_NO_ARG = "";
 
+			
+
 			constexpr const Char* ALERT_ID_CANT_BLACK = "ID는 공백을 포함할 수 없습니다. 다시 입력해 주세요.\r\n";
 			constexpr const Char* ALERT_ARGUMENT_WRONG = "명령어 인자가 이상합니다.\r\n";
 			constexpr const Char* ALERT_PLS_COMMAND = "명령어를 입력해주세요.\r\n";
@@ -59,6 +61,8 @@ namespace OJT
 		};
 		namespace FORMAT
 		{
+			constexpr const Char* TITLE_LINE = "--------------------[%+11s%-10s]--------------------\r\n";
+
 			constexpr const Char* WELCOME = "** 안녕하세요. 텍스트 채팅 서버 ver %s입니다.\r\n";
 			constexpr const Char* HELP_OR_EXIT = "명령어 안내(%s) 종료(%s)\r\n";
 			constexpr const Char* TOOLTIP = "%3s %-24s %s\r\n";

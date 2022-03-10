@@ -19,7 +19,7 @@
 void OJT::ChatCommand::CommandRoomList::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
 	auto& idMap = information.GetIdMap();
-	session.SendText( CONSTANT::TEXT::LINE );
+	session.SendFormattedText(CONSTANT::FORMAT::TITLE_LINE, "대화방", " 목록");
 	Int32 roomIndex = 1;
 	for ( const auto& room : information.GetChatRooms() )
 	{

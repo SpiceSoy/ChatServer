@@ -18,7 +18,8 @@
 void OJT::ChatCommand::CommandUserList::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
 	auto& idMap = information.GetIdMap();
-	session.SendText( CONSTANT::TEXT::LINE );
+	//session.SendText( CONSTANT::TEXT::LINE );
+	session.SendFormattedText(CONSTANT::FORMAT::TITLE_LINE, "이용자", " 목록");
 	for ( const auto& otherSession : information.GetSessions() )
 	{
 		session.SendFormattedText(

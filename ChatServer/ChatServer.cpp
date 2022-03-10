@@ -103,10 +103,11 @@ void OJT::ChatServer::Select()
 	for ( auto& session : Information.GetSessions() )
 	{
 		FD_SET( session->GetSocket(), &read );
+		FD_SET(session->GetSocket(), &except);
 		if ( session->HasSendBytes() ) FD_SET( session->GetSocket(), &write );
 	}
 
-	ResultCode selectResult = select( NULL, &read, &write, NULL, NULL ); // time == NULL : 무한히 기다림
+	ResultCode selectResult = select( NULL, &read, &write, &except, NULL ); // time == NULL : 무한히 기다림
 	if ( selectResult == SOCKET_ERROR ) PrintLastErrorMessageInFile( "Select" );
 
 	//Accept
@@ -142,6 +143,13 @@ void OJT::ChatServer::Select()
 	{
 		if ( !FD_ISSET( session->GetSocket(), &write ) ) continue;
 		session->ProcessSend();
+	}
+	//Except
+	for (auto& session : Information.GetSessions())
+	{
+		if (!FD_ISSET(session->GetSocket(), &except)) continue;
+		session->Close();
+		session->LogInput("connection error");
 	}
 	Information.EraseClosedSessions();
 	Information.EraseEmptyChatRooms();
