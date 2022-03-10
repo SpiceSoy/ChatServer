@@ -42,6 +42,7 @@ void OJT::ChatCommand::CommandEnterRoom::Execute( const Char* argument, Session&
 			}
 			else
 			{
+				session.SendText(CONSTANT::TEXT::ROOM_ENTER);
 				session.SetChatRoom( &room );
 				room.EnterUser( session );
 				session.SetState( ESessionState::ChatRoom );

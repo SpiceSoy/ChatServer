@@ -38,7 +38,8 @@ void OJT::ChatCommand::CommandLogin::Execute( const Char* argument, Session& ses
 		session.SetState( ESessionState::MainMenu );
 		session.SetId( id.c_str() );
 		information.SetId( session, id.c_str() );
-		session.SendText( CONSTANT::TEXT::LINE );
+		//session.SendText( CONSTANT::TEXT::LINE );
+		session.SendFormattedText(CONSTANT::FORMAT::TITLE_LINE, "로그인", " 성공");
 		session.SendFormattedText( CONSTANT::FORMAT::WELCOME, CONSTANT::VALUE::VERSION );
 		session.SendText( CONSTANT::TEXT::WRITER_INFO );
 		session.SendText( CONSTANT::TEXT::LINE );

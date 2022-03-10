@@ -48,16 +48,18 @@ namespace OJT
 
 			
 
-			constexpr const Char* ALERT_ID_CANT_BLACK = "ID는 공백을 포함할 수 없습니다. 다시 입력해 주세요.\r\n";
-			constexpr const Char* ALERT_ARGUMENT_WRONG = "명령어 인자가 이상합니다.\r\n";
-			constexpr const Char* ALERT_PLS_COMMAND = "명령어를 입력해주세요.\r\n";
-			constexpr const Char* ALERT_NO_ROOM_NUM = "해당 번호의 방이 존재하지 않습니다.\r\n";
-			constexpr const Char* ALERT_NO_ID_USER = "해당 ID를 가진 유저가 존재하지 않습니다.\r\n";
-			constexpr const Char* ALERT_NO_SPACE = "방에 남아있는 자리가 없습니다.\r\n";
-			constexpr const Char* ALERT_NO_IN_ROOM = "현재 방에 위치하고 있지 않아 초대메시지를 보낼 수 없습니다.\r\n";
+			constexpr const Char* ALERT_ID_CANT_BLACK = "** ID는 공백을 포함할 수 없습니다. 다시 입력해 주세요.\r\n";
+			constexpr const Char* ALERT_ARGUMENT_WRONG = "** 명령어 인자가 이상합니다.\r\n";
+			constexpr const Char* ALERT_PLS_COMMAND = "** 명령어를 입력해주세요.\r\n";
+			constexpr const Char* ALERT_NO_ROOM_NUM = "** 해당 번호의 방이 존재하지 않습니다.\r\n";
+			constexpr const Char* ALERT_NO_ID_USER = "** 해당 ID를 가진 유저가 존재하지 않습니다.\r\n";
+			constexpr const Char* ALERT_NO_SPACE = "** 방에 남아있는 자리가 없습니다.\r\n";
+			constexpr const Char* ALERT_NO_IN_ROOM = "** 현재 방에 위치하고 있지 않아 초대메시지를 보낼 수 없습니다.\r\n";
 
-			constexpr const Char* ROOM_CREATED = "대화방이 개설되었습니다.\r\n";
-			constexpr const Char* GOODBYE_USER = "연결을 종료합니다. 이용해주셔서 감사합니다.\r\n";
+			constexpr const Char* ROOM_ENTER = "** 대화방에 들어갑니다.\r\n";
+			constexpr const Char* ROOM_QUIT = "** 대화방에서 나갑니다.\r\n";
+			constexpr const Char* ROOM_CREATED = "** 대화방이 개설되었습니다.\r\n";
+			constexpr const Char* GOODBYE_USER = "** 연결을 종료합니다. 이용해주셔서 감사합니다.\r\n";
 		};
 		namespace FORMAT
 		{

@@ -18,6 +18,7 @@
 
 void OJT::ChatCommand::CommandQuitRoom::Execute( const Char* argument, Session& session, ChatInformation& information ) const
 {
+	session.SendText(OJT::CONSTANT::TEXT::ROOM_QUIT);
 	session.GetChatRoom()->ExitUser( session );
 	session.SetChatRoom( nullptr );
 	session.SetState( ESessionState::MainMenu );

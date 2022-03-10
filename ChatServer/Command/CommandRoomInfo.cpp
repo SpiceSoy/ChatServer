@@ -58,7 +58,6 @@ void OJT::ChatCommand::CommandRoomInfo::Execute( const Char* argument, Session& 
 			localtime_s( &entryTm, &entryTime );
 			session.SendFormattedText( CONSTANT::FORMAT::ROOM_ENTRY_USERS, member->GetId().c_str(), createTm.tm_hour, createTm.tm_min, createTm.tm_sec );
 		}
-		session.SendText( sstream.str().c_str() );
 		session.SendText( CONSTANT::TEXT::LINE );
 	}
 	else
